@@ -16,8 +16,8 @@ A website that an "admin" can upload audiofiles (audiobooks) and share specific 
 
 I have an extensive library (200+) of audiobooks. Many of those I have bought from "audible" and many more on CD / digitalized on mp3.
 
-Audible synchronizes the progress of each audiobook over every device, this isn't possible with the physically owned ones and there is no real solution out there that allows that. (There is booksonic & plex but both don't save the progress across devices.) In fact there really not many great solutions to save the current progress even on the local device.
-Further I would love to be able to share my audiobooks that I have in audible with my family, which isn't possible, except with account sharing, which brings the problem that I can't listen to the same audiobook as my sister, basically one can only listen to audiobooks that are already finished to not screw up the saved listening progress.
+Audible synchronizes the progress of each audiobook over every device, this isn't possible with the physically owned ones and there is no real solution out there that allows that. (There is booksonic & plex but both don't save the progress across devices.) In fact there are really not many great solutions to save the current progress even on the local device.
+Further I would love to be able to share my audiobooks that I have in audible with my family, which isn't possible, except with account sharing, which brings the problem that I can't listen to the same audiobook as my sister. In essence one can only listen to audiobooks that are already finished, if you don't want to screw up the listening progress.
 
 *detailed*
 
@@ -28,13 +28,13 @@ I want an application where I as an administrator can:
 
 A user upon login:
 
-- sees the most recent to audiobook
+- sees the most recent audiobook they listened to.
 - can browse authors and their books.
 - if clicking on an audiobook, the book continues to play from the last saved progress point for that specific user.
 
 
 
-I certainly have many more ideas to add to that project such as metadata crawling over the audible api, to automatically group book series etc. but that would be wide out of scope for that exercise.
+I certainly have many more ideas to add to that project such as a metadata crawler over the audible api, to automatically group book series etc. but that would be wide out of scope for that exercise.
 
 
 ## Project confirmation
