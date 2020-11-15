@@ -39,7 +39,13 @@ I certainly have many more ideas to add to that project such as a metadata crawl
 
 ## Project confirmation
 
-< to be filled by lecturer>
+This is a phantastic idea, in particular because it solves a real problem. You should start with a minimal feature set. If there is time left in the end, you can always add new features later.
+
+I hope uploading and playing the audio is not too complicated. Even though your application is kind of pointless without it, I think you can skip this functionality for the exercise, if it burns too much time. Sounds like you plan to continue with this project after the exercise anyway.
+
+You can start. Good luck!
+
+(The communication and documentation can also be in German, if you prefer.)
 
 
 ## Project delivery <to be filled by student>
