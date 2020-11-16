@@ -3,8 +3,34 @@
 <head>
 </head>
 <body>
-<div th:fragment="navigation">
-<h1>Nav content</h1>
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" th:fragment="navigation">
+    <div class="container">
+        <a href="/" class="navbar-brand">AudiobookStream</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Current</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/authors/">Authors</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download"
+                       aria-expanded="false">Admin <span class="caret"></span></a>
+                    <div class="dropdown-menu" aria-labelledby="download">
+                        <a class="dropdown-item" rel="noopener" target="_blank"
+                           href="/admin/upload">Upload Audiobook</a>
+                        <a class="dropdown-item" rel="noopener" target="_blank"
+                           href="/admin/permissions">Permissions</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 </body>

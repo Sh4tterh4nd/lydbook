@@ -10,4 +10,9 @@ public class MainController {
     public String index(){
         return "index";
     }
+
+    @GetMapping("/authors/")
+    public String authors(){
+        return "authors";
+    }
 }
