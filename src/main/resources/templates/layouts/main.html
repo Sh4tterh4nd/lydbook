@@ -3,13 +3,22 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
 
-<div layout:fragment="content">
+<div class="container body-content">
+    <div class="col-md-10 col-md-offset-1">
+        <div layout:fragment="content">
+
+        </div>
+    </div>
 </div>
 
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
