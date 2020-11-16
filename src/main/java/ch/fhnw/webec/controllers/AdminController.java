@@ -1,4 +1,4 @@
-package ch.fhnw.webec;
+package ch.fhnw.webec.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
