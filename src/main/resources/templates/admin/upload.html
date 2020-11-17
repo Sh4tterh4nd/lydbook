@@ -16,19 +16,76 @@
         </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <div class="input-group mb-3">
+                <form method="post" enctype="multipart/form-data" class="input-group mb-3" id="uploadForm">
                     <div class="custom-file">
-                        <input type="file" accept=".mp3" class="custom-file-input" id="inputGroupFile02">
-                        <label class="custom-file-label" for="inputGroupFile02">Choose a mp3 file</label>
+                        <input name="data" type="file" accept=".mp3" class="custom-file-input" id="inputGroupFile">
+                        <label class="custom-file-label" for="inputGroupFile">Choose a mp3 file</label>
                     </div>
                     <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
+                        <input type="submit" value="Upload" class="input-group-text" id="uploadBtn"/>
                     </div>
-                </div>
+                </form>
             </div>
 
         </div>
     </div>
+
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        $(document).ready(function () {
+
+            $("#uploadBtn").click(function (event) {
+
+                //stop submit the form, we will post it manually.
+                event.preventDefault();
+
+                // Get form
+                var form = $('#uploadForm')[0];
+
+                // Create an FormData object
+                var data = new FormData(form);
+
+                // If you want to add an extra field for the FormData
+                data.append("CustomField", "This is some extra data, testing");
+
+                // disabled the submit button
+                $("#uploadBtn").prop("disabled", true);
+
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "/api/v1/audiobook",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+
+                        $("#result").text(data);
+                        console.log("SUCCESS : ", data);
+                        $("#btnSubmit").prop("disabled", false);
+
+                    },
+                    error: function (e) {
+
+                        $("#result").text(e.responseText);
+                        console.log("ERROR : ", e);
+                        $("#btnSubmit").prop("disabled", false);
+
+                    }
+                });
+
+            });
+
+        });
+
+    </script>
 </th:block>
 </body>
 </html>
