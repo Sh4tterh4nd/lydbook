@@ -1,9 +1,18 @@
 package ch.fhnw.webec.entity;
 
+import javax.persistence.*;
 import java.util.List;
-
+@Entity
+@Table(name = "author")
 public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq_gen")
+    @SequenceGenerator(name = "author_seq_gen", sequenceName = "author_sequence", initialValue = 10000)
+    private Long id;
+
     private String name;
+
+    @OneToMany()
     private List<Book> bookList;
 
     public String getName() {
