@@ -1,6 +1,9 @@
 package ch.fhnw.webec.controllers;
 
 import ch.fhnw.webec.services.ImportAudiobookService;
+import ch.fhnw.webec.util.AudiobookUtil;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/audiobook")
@@ -23,17 +27,19 @@ public class ApiController {
     }
 
     @PostMapping
-    public void addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+    public void addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException, InvalidDataException, UnsupportedTagException {
+        String newFilename = UUID.randomUUID().toString().concat(AudiobookUtil.getFileEnding(multipartFile.getOriginalFilename()));
         Path upload = Paths.get("data");
         if (Files.notExists(upload)) {
             Files.createDirectory(upload);
         }
-        Path output = upload.resolve(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        Path output = upload.resolve(Objects.requireNonNull(newFilename));
         OutputStream outputStream = new FileOutputStream(output.toFile());
         multipartFile.getInputStream().transferTo(outputStream);
         outputStream.flush();
         outputStream.close();
 
+        importAudiobookService.addAudiobook(multipartFile.getOriginalFilename(),output);
     }
 
     @GetMapping
