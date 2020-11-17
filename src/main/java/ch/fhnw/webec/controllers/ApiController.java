@@ -1,11 +1,17 @@
 package ch.fhnw.webec.controllers;
 
 import ch.fhnw.webec.services.ImportAudiobookService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/v1/audiobook")
@@ -17,8 +23,17 @@ public class ApiController {
     }
 
     @PostMapping
-    public String addAudiobook() {
-        return "";
+    public void addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        Path upload = Paths.get("data");
+        if (Files.notExists(upload)) {
+            Files.createDirectory(upload);
+        }
+        Path output = upload.resolve(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        OutputStream outputStream = new FileOutputStream(output.toFile());
+        multipartFile.getInputStream().transferTo(outputStream);
+        outputStream.flush();
+        outputStream.close();
+
     }
 
     @GetMapping
