@@ -1,7 +1,7 @@
 package ch.fhnw.webec.controllers;
 
+import ch.fhnw.webec.services.ImportAudiobookService;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +10,11 @@ import java.io.File;
 @RestController
 @RequestMapping("api/v1/audiobook")
 public class ApiController {
+    private final ImportAudiobookService importAudiobookService;
+
+    public ApiController(ImportAudiobookService importAudiobookService) {
+        this.importAudiobookService = importAudiobookService;
+    }
 
     @PostMapping
     public String addAudiobook() {
@@ -29,7 +34,7 @@ public class ApiController {
 
     @GetMapping(value = "{bookId}/stream")
     public ResponseEntity<FileSystemResource> getFile(@PathVariable("bookId") String bookId) {
-        return ResponseEntity.ok().body(new FileSystemResource(new File("B:\\abc.mp3")));
+        return ResponseEntity.ok().body(new FileSystemResource(new File("B:\\a.mp3")));
     }
 
 
