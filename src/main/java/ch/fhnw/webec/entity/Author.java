@@ -12,7 +12,7 @@ public class Author {
 
     private String name;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "author")
     private List<Book> bookList;
 
     public String getName() {
