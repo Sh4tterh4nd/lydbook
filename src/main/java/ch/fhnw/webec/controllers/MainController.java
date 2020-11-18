@@ -4,6 +4,7 @@ import ch.fhnw.webec.repository.AuthorRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MainController {
@@ -22,5 +23,11 @@ public class MainController {
     public String authors(Model model){
         model.addAttribute("authors", authorRepository.findAllByOrderByNameAsc());
         return "authors";
+    }
+
+    @GetMapping("/authors/{id}")
+    public String author(Model model, @PathVariable("id") Long id){
+        model.addAttribute("author", authorRepository.findAuthorById(id));
+        return "author";
     }
 }
