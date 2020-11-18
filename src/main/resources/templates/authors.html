@@ -18,14 +18,17 @@
 
     <div class="row mb-3">
         <div class="col-lg-3" th:each="author: ${authors}">
-            <div class="bs-component">
-<!--                TODO-->
-<!--                <div class="card mb-3 border-primary"> BORDEER-->
-                <div class="card mb-3">
-                    <img src="/authplaceholder.svg" alt="Author Img" style="max-width: 100%; height: auto">
-                    <h4 class="card-header" th:text="${author.getName()}">Author Name</h4>
+
+            <a th:href="'/authors/'+${author.getId()}" style="color: inherit">
+                <div class="bs-component">
+                    <!--                TODO-->
+                    <!--                <div class="card mb-3 border-primary"> BORDEER-->
+                    <div class="card mb-3">
+                        <img src="/authplaceholder.svg" alt="Author Img" style="max-width: 100%; height: auto">
+                        <h4 class="card-header" th:text="${author.getName()}">Author Name</h4>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </th:block>
