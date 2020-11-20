@@ -10,6 +10,7 @@ public class Author {
     @SequenceGenerator(name = "author_seq_gen", sequenceName = "author_sequence", initialValue = 10000)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "author")
