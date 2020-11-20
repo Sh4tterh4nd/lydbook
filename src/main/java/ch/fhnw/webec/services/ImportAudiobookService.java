@@ -25,7 +25,6 @@ public class ImportAudiobookService {
     }
 
     public void addAudiobook(String originalFilename, Path file) throws InvalidDataException, IOException, UnsupportedTagException {
-        Author author = new Author();
         Book book = new Book();
         Mp3File mp3file = new Mp3File(file);
         String authorName = "";
@@ -42,13 +41,15 @@ public class ImportAudiobookService {
             book.setTitle(id3v2Tag.getAlbum());
             authorName = id3v2Tag.getArtist();
         }
-        author.setName(authorName);
-        System.out.println("Author" + authorName);
-        List<Author> a = authorRepository.findAuthorsByName(authorName);
+        Author a = authorRepository.findAuthorByName(authorName);
+        if (a == null) {
+            a = new Author();
+            a.setName(authorName);
+            authorRepository.save(a);
+        }
 
 
-        authorRepository.save(author);
-        book.setAuthor(author);
+        book.setAuthor(a);
         bookRepository.save(book);
     }
 
