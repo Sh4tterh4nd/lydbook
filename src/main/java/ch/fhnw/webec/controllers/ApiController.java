@@ -46,12 +46,12 @@ public class ApiController {
         outputStream.flush();
         outputStream.close();
 
-        importAudiobookService.addAudiobook(multipartFile.getOriginalFilename(),output);
+        importAudiobookService.addAudiobook(multipartFile.getOriginalFilename(), output);
     }
 
     @GetMapping
     public String getAudiobooks(@RequestParam("user") String str) {
-        List<Author> authorsByName = authorRepository.findAuthorsByNameIsLike(str);
+        List<Author> authorsByName = authorRepository.findAuthorsByName(str);
         System.out.println(str);
         System.out.println(authorsByName.size());
         return "test";
@@ -63,8 +63,9 @@ public class ApiController {
     }
 
     @GetMapping(value = "{bookId}/stream")
-    public ResponseEntity<FileSystemResource> getFile(@PathVariable("bookId") String bookId) {
-        return ResponseEntity.ok().body(new FileSystemResource(new File("B:\\a.mp3")));
+    public ResponseEntity<FileSystemResource> getFile(@PathVariable("bookId") Long bookId) {
+        Path bookPath = Paths.get("data", bookRepository.findBookById(bookId).getFilename());
+        return ResponseEntity.ok().body(new FileSystemResource(bookPath));
     }
 
 
