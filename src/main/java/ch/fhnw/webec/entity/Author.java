@@ -3,7 +3,7 @@ package ch.fhnw.webec.entity;
 import javax.persistence.*;
 import java.util.List;
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq_gen")

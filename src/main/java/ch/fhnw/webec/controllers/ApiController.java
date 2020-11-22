@@ -1,6 +1,7 @@
 package ch.fhnw.webec.controllers;
 
 import ch.fhnw.webec.entity.Author;
+import ch.fhnw.webec.entity.Book;
 import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.services.ImportAudiobookService;
@@ -64,7 +65,10 @@ public class ApiController {
 
     @GetMapping(value = "{bookId}/stream")
     public ResponseEntity<FileSystemResource> getFile(@PathVariable("bookId") Long bookId) {
-        Path bookPath = Paths.get("data", bookRepository.findBookById(bookId).getFilename());
+        Book book= bookRepository.findBookById(bookId);
+        if (book== null) return ResponseEntity.notFound().build();
+
+        Path bookPath = Paths.get("data", book.getFilename());
         return ResponseEntity.ok().body(new FileSystemResource(bookPath));
     }
 
