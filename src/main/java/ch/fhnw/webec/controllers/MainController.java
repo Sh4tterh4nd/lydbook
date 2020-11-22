@@ -30,4 +30,10 @@ public class MainController {
         model.addAttribute("author", authorRepository.findAuthorById(id));
         return "author";
     }
+
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
 }
