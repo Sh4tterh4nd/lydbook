@@ -23,7 +23,7 @@ public class BookController {
         return "book";
     }
 
-    @GetMapping("/books}")
+    @GetMapping("/books/")
     public String getBooks(Model model){
         model.addAttribute("books", bookRepository.findAllByOrderByTitleAsc());
         return "books";

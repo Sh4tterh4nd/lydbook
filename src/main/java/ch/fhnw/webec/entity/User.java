@@ -1,7 +1,6 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,10 +22,12 @@ public class User {
 
 //    @ManyToOne()
 //    private Book currentBook;
+    @Column(name = "shareall")
+    private boolean shareAll;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole userRole;
+    private UserRole role;
 
     public Long getId() {
         return id;
@@ -52,11 +53,19 @@ public class User {
         this.password = password;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public boolean isShareAll() {
+        return shareAll;
+    }
+
+    public void setShareAll(boolean shareAll) {
+        this.shareAll = shareAll;
     }
 }
