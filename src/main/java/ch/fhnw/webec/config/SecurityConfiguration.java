@@ -1,5 +1,6 @@
 package ch.fhnw.webec.config;
 
+import ch.fhnw.webec.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -35,32 +35,32 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder.jdbcAuthentication()
-//                .dataSource(dataSource)
-//                .usersByUsernameQuery("SELECT username, password, true FROM users WHERE username=?")
-////                .authoritiesByUsernameQuery("SELECT username, concat('ROLE_', role) FROM users WHERE username=?")
-//                .passwordEncoder(passwordEncoder());
-
-        authenticationManagerBuilder.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("USER");
+        authenticationManagerBuilder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("SELECT username, password, true FROM users WHERE username=?")
+                .authoritiesByUsernameQuery("SELECT username, concat('ROLE_', role) FROM users WHERE username=?")
+                .passwordEncoder(passwordEncoder());
     }
 
     @Configuration
     public static class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity httpSecurity) throws Exception {
-            httpSecurity
-                    .authorizeRequests()
-                    .antMatchers("/css/**","/js/**").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .permitAll();
+//            httpSecurity
+//                    .authorizeRequests()
+//                    .antMatchers("/css/**","/js/**").permitAll()
+//                    .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+//                    .anyRequest().authenticated()
+//                    .and()
+//                    .formLogin()
+//                    .loginPage("/login")
+//                    .permitAll()
+//                    .and()
+//                    .logout()
+////                    .permitAll();
+            httpSecurity.authorizeRequests()
+                    .antMatchers(HttpMethod.PUT,"/**").permitAll().
+            and().csrf().disable();
         }
 
     }
