@@ -27,7 +27,9 @@
         </a>
     </div>
     <!--    </div>-->
-
+    <fieldset class="form-group">
+        <input type="range" class="custom-range" id="playbackslider" min="0"value="0" step="1">
+    </fieldset>
 
     <div class="col-lg-12">
         <audio id="audiobook" controls="" style="width: 100%">
@@ -35,17 +37,17 @@
         </audio>
     </div>
 
-    <button onclick="jumpBackward();">Backward</button>
-    <button onclick="pausePlay();">Pause/Play</button>
-    <button onclick="jumpForward();">Forward</button>
+    <button class="btn" onclick="jumpBackward();">
+        -30 <img src="/controls/rewind.svg">
+    </button>
+    <button class="btn" onclick="pausePlay();">
+        <img id="play" src="/controls/play.svg">
+        <img hidden id="pause" src="/controls/pause.svg">
 
-    <div class="form-group">
-        <select id="playbackspeed" class="custom-select">
-            <option value="1" selected="selected">1</option>
-            <option value="1.5">1.5</option>
-            <option value="2.0">2</option>
-        </select>
-    </div>
+    </button>
+    <button class="btn" onclick="jumpForward();">
+        +30 <img src="/controls/forward.svg">
+    </button>
 
     <fieldset class="form-group">
         <label for="playbspeed" id="speedDisplay">1</label>
@@ -60,6 +62,7 @@
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
             audio.currentTime = [[${progress}]];
+            $('#playbackslider').attr("max", Math.ceil(audio.duration));
         }
         audio.addEventListener("canplay", resumePlay)
         /*]]>*/
@@ -72,17 +75,17 @@
             if (isPlaying(audio)) {
                 audio.pause();
                 updateCurrentTime();
+                $('#pause').attr('hidden', true);
+                $('#play').attr('hidden', false);
             } else {
                 audio.play();
+                $('#pause').attr('hidden', false);
+                $('#play').attr('hidden', true);
             }
         }
 
         function isPlaying(aud) {
             return !aud.paused;
-        }
-
-        function jumpTo(newTime) {
-            audio.currentTime = newTime;
         }
 
         function jumpForward() {
@@ -103,12 +106,18 @@
             }
         }
 
+        function updateSlider() {
+            $('#playbackslider').val(audio.currentTime);
+        }
+
+        // audio.addEventListener("canplay", updateSlider)
+        audio.addEventListener("timeupdate", updateSlider)
+
+
         function updateCurrentTime() {
             // $.ajax({
             //     type: "POST"
             // })
-
-
             console.log(audio.readyState);
         }
 
