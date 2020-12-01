@@ -46,9 +46,16 @@
             <option value="2.0">2</option>
         </select>
     </div>
+
+    <fieldset class="form-group">
+        <label for="playbspeed" id="speedDisplay">1</label>
+        <input type="range" class="custom-range" id="playbspeed" min="0.5" max="3.5" value="1" step="0.1">
+    </fieldset>
+
+
     <script th:inline="javascript">
         let audio = $('#audiobook')[0];
-        let playbackspeed = $('#playbackspeed')[0];
+        let playbackspeed = $('#playbspeed')[0];
         /*<![CDATA[*/
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
@@ -56,8 +63,9 @@
         }
         audio.addEventListener("canplay", resumePlay)
         /*]]>*/
-        playbackspeed.onchange = function () {
+        playbackspeed.oninput = function () {
             audio.playbackRate = playbackspeed.value;
+            $('#speedDisplay').html(playbackspeed.value);
         }
 
         function pausePlay() {
