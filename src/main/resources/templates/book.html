@@ -40,28 +40,36 @@
     <button onclick="jumpForward();">Forward</button>
 
     <button onclick="jumpTo(90540);">jumpto</button>
-    <script>
+    <script th:inline="javascript">
+        let audio = $('#audiobook')[0];
+        /*<![CDATA[*/
+        let resumePlay =  function(e){
+            e.target.removeEventListener("canplay", resumePlay, false);
+            audio.currentTime = [[${progress}]];
+        }
+        audio.addEventListener("canplay", resumePlay)
+        /*]]>*/
+
+
         function pausePlay() {
-            var audio = $('#audiobook')[0];
-            if (isplaying(audio)) {
+            if (isPlaying(audio)) {
                 audio.pause();
+                updateCurrentTime();
             } else {
                 audio.play();
             }
         }
 
-        function isplaying(aud) {
+        function isPlaying(aud) {
             return !aud.paused;
         }
 
         function jumpTo(newTime) {
-            var audio = $('#audiobook')[0];
-            audio.currentTime =newTime;
+            audio.currentTime = newTime;
         }
 
         function jumpForward() {
-            var audio = $('#audiobook')[0];
-            var forwardTime = audio.currentTime + 30;
+            let forwardTime = audio.currentTime + 30;
             if (forwardTime < Math.ceil(audio.duration)) {
                 audio.currentTime = forwardTime;
             } else {
@@ -70,8 +78,7 @@
         }
 
         function jumpBackward() {
-            var audio = $('#audiobook')[0];
-            var backwardTime = audio.currentTime - 30;
+            let backwardTime = audio.currentTime - 30;
             if (backwardTime > 0) {
                 audio.currentTime = backwardTime;
             } else {
@@ -80,14 +87,17 @@
         }
 
         function updateCurrentTime() {
-            $.ajax({
-                type: "POST"
-            })
+            // $.ajax({
+            //     type: "POST"
+            // })
+
+
+            console.log(audio.readyState);
         }
 
 
         $(function () {
-            setInterval(updateCurrentTime, 15000);
+            setInterval(updateCurrentTime, 1000);
         });
     </script>
 </th:block>

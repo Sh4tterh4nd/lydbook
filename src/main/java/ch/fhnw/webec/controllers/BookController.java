@@ -20,6 +20,7 @@ public class BookController {
     @GetMapping("/book/{id}")
     public String getBook(Model model, @PathVariable("id") Long id){
         model.addAttribute("book", bookRepository.findBookById(id));
+        model.addAttribute("progress", 600);
         return "book";
     }
 
