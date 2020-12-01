@@ -39,17 +39,26 @@
     <button onclick="pausePlay();">Pause/Play</button>
     <button onclick="jumpForward();">Forward</button>
 
-    <button onclick="jumpTo(90540);">jumpto</button>
+    <div class="form-group">
+        <select id="playbackspeed" class="custom-select">
+            <option value="1" selected="selected">1</option>
+            <option value="1.5">1.5</option>
+            <option value="2.0">2</option>
+        </select>
+    </div>
     <script th:inline="javascript">
         let audio = $('#audiobook')[0];
+        let playbackspeed = $('#playbackspeed')[0];
         /*<![CDATA[*/
-        let resumePlay =  function(e){
+        let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
             audio.currentTime = [[${progress}]];
         }
         audio.addEventListener("canplay", resumePlay)
         /*]]>*/
-
+        playbackspeed.onchange = function () {
+            audio.playbackRate = playbackspeed.value;
+        }
 
         function pausePlay() {
             if (isPlaying(audio)) {
