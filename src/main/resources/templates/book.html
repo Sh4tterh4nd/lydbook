@@ -30,10 +30,66 @@
 
 
     <div class="col-lg-12">
-        <audio id="voice" controls="" style="width: 100%">
+        <audio id="audiobook" controls="" style="width: 100%">
             <source th:src="'/api/v1/audiobook/'+${book.getId()}+'/stream'">
         </audio>
     </div>
+
+    <button onclick="jumpBackward();">Backward</button>
+    <button onclick="pausePlay();">Pause/Play</button>
+    <button onclick="jumpForward();">Forward</button>
+
+    <button onclick="jumpTo(90540);">jumpto</button>
+    <script>
+        function pausePlay() {
+            var audio = $('#audiobook')[0];
+            if (isplaying(audio)) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        }
+
+        function isplaying(aud) {
+            return !aud.paused;
+        }
+
+        function jumpTo(newTime) {
+            var audio = $('#audiobook')[0];
+            audio.currentTime =newTime;
+        }
+
+        function jumpForward() {
+            var audio = $('#audiobook')[0];
+            var forwardTime = audio.currentTime + 30;
+            if (forwardTime < Math.ceil(audio.duration)) {
+                audio.currentTime = forwardTime;
+            } else {
+                audio.currentTime = Math.ceil(audio.duration) - 1;
+            }
+        }
+
+        function jumpBackward() {
+            var audio = $('#audiobook')[0];
+            var backwardTime = audio.currentTime - 30;
+            if (backwardTime > 0) {
+                audio.currentTime = backwardTime;
+            } else {
+                audio.currentTime = 0;
+            }
+        }
+
+        function updateCurrentTime() {
+            $.ajax({
+                type: "POST"
+            })
+        }
+
+
+        $(function () {
+            setInterval(updateCurrentTime, 15000);
+        });
+    </script>
 </th:block>
 </body>
 </html>

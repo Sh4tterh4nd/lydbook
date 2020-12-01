@@ -1,6 +1,7 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,11 +18,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Progress> progressList;
+    @OneToMany(mappedBy = "user")
+    private List<Progress> progressList;
 
-//    @ManyToOne()
-//    private Book currentBook;
+    @ManyToOne()
+    @JoinColumn(name = "current_book_id")
+    private Book currentBook;
+
+
     @Column(name = "shareall")
     private boolean shareAll;
 
@@ -67,5 +71,21 @@ public class User {
 
     public void setShareAll(boolean shareAll) {
         this.shareAll = shareAll;
+    }
+
+    public List<Progress> getProgressList() {
+        return progressList;
+    }
+
+    public void setProgressList(List<Progress> progressList) {
+        this.progressList = progressList;
+    }
+
+    public Book getCurrentBook() {
+        return currentBook;
+    }
+
+    public void setCurrentBook(Book currentBook) {
+        this.currentBook = currentBook;
     }
 }

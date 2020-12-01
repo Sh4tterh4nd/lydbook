@@ -1,9 +1,25 @@
 package ch.fhnw.webec.entity;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "progress",uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","book_id"}))
 public class Progress {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "progress_seq_gen")
+    @SequenceGenerator(name = "progress_seq_gen", sequenceName = "progress_sequence", initialValue = 10000)
+    private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne()
+    @JoinColumn(name = "book_id")
     private Book book;
+
     private Integer progress;
 
     public User getUser() {
