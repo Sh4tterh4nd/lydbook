@@ -12,7 +12,7 @@ public class User {
     @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_sequence", initialValue = 10001)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
