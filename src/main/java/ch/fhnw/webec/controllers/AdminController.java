@@ -1,6 +1,11 @@
 package ch.fhnw.webec.controllers;
 
+import ch.fhnw.webec.entity.Book;
+import ch.fhnw.webec.entity.Progress;
 import ch.fhnw.webec.entity.User;
+import ch.fhnw.webec.entity.UserRole;
+import ch.fhnw.webec.repository.BookRepository;
+import ch.fhnw.webec.repository.ProgressRepository;
 import ch.fhnw.webec.repository.UserRepository;
 import ch.fhnw.webec.services.UserService;
 import org.springframework.http.MediaType;
@@ -12,10 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ProgressRepository progressRepository;
+    private final BookRepository bookRepository;
 
-    public AdminController(UserRepository userRepository, UserService userService) {
+    public AdminController(UserRepository userRepository, UserService userService, ProgressRepository progressRepository, BookRepository bookRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.progressRepository = progressRepository;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping("/admin/upload")

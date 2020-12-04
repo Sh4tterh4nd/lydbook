@@ -10,6 +10,5 @@ import java.util.List;
 public interface ProgressRepository extends JpaRepository<Progress,Long> {
 
     List<Progress> findProgressesByUser(User user);
-    List<Progress> findProgressByBookAndUser(Book book, User user);
-
+    Progress findFirstByBookAndUser(Book book, User user);
 }

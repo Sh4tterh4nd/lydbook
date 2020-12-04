@@ -32,18 +32,19 @@
         </div>
     </div>
     <div class="col-lg-12">
-        <audio id="audiobook" controls="" style="width: 100%">
+        <!--        <audio id="audiobook" controls="" style="width: 100%">-->
+        <audio id="audiobook" style="width: 100%">
             <source th:src="'/api/v1/audiobook/'+${book.getId()}+'/stream'">
         </audio>
     </div>
 
-    <div class="alert alert-secondary">
+    <!--    <div class="alert alert-secondary fixed-bottom">-->
+    <div class="alert alert-secondary ">
         <fieldset class="form-group">
             <input type="range" class="custom-range" id="playbackSlider" min="0" value="0" step="1">
         </fieldset>
 
         <div class="row">
-
             <div class="col-lg-3">
                 <div class="center">
                     <div style="width: 100%">
@@ -76,19 +77,18 @@
                            value="100" step="1" id="volumeSlider"/>
                     <img src="/controls/volume-up.svg">
                 </div>
-
             </div>
         </div>
     </div>
-
     <script th:inline="javascript">
         let audio = $('#audiobook')[0];
         let playbackspeed = $('#playbspeed')[0];
         let volumeSlider = $('#volumeSlider')[0];
-
+        let bookID = /*<![CDATA[*/ [[${book.getId()}]]; /*]]>*/
+        var interval;
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
-            audio.currentTime = /*<![CDATA[*/ [[${progress}]]; /*]]>*/
+            audio.currentTime = /*<![CDATA[*/ [[${progress !=null}? ${progress.getProgress()}:'0']]; /*]]>*/
             $('#playbackSlider').attr("max", Math.ceil(audio.duration));
             $('#playbackSlider').val(audio.currentTime);
         }
@@ -100,8 +100,8 @@
             $('#speedDisplay').html(playbackspeed.value);
         }
 
-        volumeSlider.oninput = function (){
-            audio.volume = volumeSlider.value /100;
+        volumeSlider.oninput = function () {
+            audio.volume = volumeSlider.value / 100;
         }
 
         $('#playbackSlider')[0].oninput = function () {
@@ -111,6 +111,7 @@
         function pausePlay() {
             if (isPlaying(audio)) {
                 audio.pause();
+                clearInterval(interval);
                 updateCurrentTime();
                 $('#pause').attr('hidden', true);
                 $('#play').attr('hidden', false);
@@ -118,6 +119,7 @@
                 audio.play();
                 $('#pause').attr('hidden', false);
                 $('#play').attr('hidden', true);
+                interval = setInterval(updateCurrentTime, 10000)
             }
         }
 
@@ -147,16 +149,16 @@
             audio.currentTime = $('#playbackSlider')[0].value;
         }
 
-        audio.addEventListener("oninput", updateSlider)
-
-        // audio.addEventListener("timeupdate", updateSlider)
-
-
         function updateCurrentTime() {
-            // $.ajax({
-            //     type: "POST"
-            // })
-            console.log(audio.readyState);
+            let progress = audio.currentTime;
+            $.ajax({
+                type: "POST",
+                url: "/api/v1/audiobook/" + bookID + "/progress",
+                data: progress,
+                contentType: 'text/plain',
+                processData: false,
+                timeout: 10000
+            })
         }
 
 
@@ -177,9 +179,8 @@
             }
         }
 
-        $(function () {
-            setInterval(updateCurrentTime, 10000);
-        });
+        audio.addEventListener("oninput", updateSlider)
+        // audio.addEventListener("timeupdate", updateSlider)
     </script>
 </th:block>
 </body>
