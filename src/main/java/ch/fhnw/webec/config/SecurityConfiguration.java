@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor;
+import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
 import javax.sql.DataSource;
 
@@ -42,25 +44,28 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                 .passwordEncoder(passwordEncoder());
     }
 
+
     @Configuration
     public static class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity httpSecurity) throws Exception {
-//            httpSecurity
-//                    .authorizeRequests()
-//                    .antMatchers("/css/**","/js/**").permitAll()
-//                    .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-//                    .anyRequest().authenticated()
-//                    .and()
-//                    .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .and()
-//                    .logout()
-////                    .permitAll();
-            httpSecurity.authorizeRequests()
-                    .antMatchers(HttpMethod.PUT,"/**").permitAll().
-            and().csrf().disable();
+            httpSecurity
+                    .authorizeRequests()
+                    .antMatchers("/css/**","/js/**").permitAll()
+                    .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+                    .antMatchers(HttpMethod.POST,"/api/v1/**").hasRole(UserRole.ADMIN.name())
+                    .anyRequest().authenticated().and()
+                    .csrf().ignoringAntMatchers("/api/**")
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
+//            httpSecurity.authorizeRequests()
+//                    .antMatchers("/**").permitAll().
+//            and().csrf().ignoringAntMatchers("/api/**");
         }
 
     }

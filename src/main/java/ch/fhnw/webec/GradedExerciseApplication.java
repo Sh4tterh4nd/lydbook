@@ -13,9 +13,6 @@ import java.util.List;
 public class GradedExerciseApplication {
 
     public static void main(String[] args) {
-
-
-
         SpringApplication.run(GradedExerciseApplication.class, args);
     }
 
