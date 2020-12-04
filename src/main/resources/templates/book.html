@@ -8,10 +8,8 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-
-    <!--    <div class="row mb-4">-->
-    <div class="col-lg-6">
-        <a style="color: inherit">
+    <div class="row">
+        <div class="col-lg-6">
             <div class="bs-component">
                 <div class="card mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%"
@@ -21,54 +19,93 @@
                         <rect width="100%" height="100%" fill="#868e96"></rect>
                         <text x="50%" y="50%" fill="#dee2e6" dy=".3em" th:text="${book.getTitle()}">Image cap</text>
                     </svg>
-                    <h4 class="card-header">Author Name</h4>
                 </div>
             </div>
-        </a>
+        </div>
+        <div class="col-lg-6">
+            <div class="bs-component">
+                <h2 th:text="${book.getTitle()}">Book Title</h2>
+                <h4>Author: <a th:href="'/authors/'+${book.getAuthor().getId()}"
+                               th:text="${book.getAuthor().getName()}"></a></h4>
+                <h4 th:text="'Duration: ' + ${book.getLength()}">Duration: 15min</h4>
+            </div>
+        </div>
     </div>
-    <!--    </div>-->
-    <fieldset class="form-group">
-        <input type="range" class="custom-range" id="playbackslider" min="0"value="0" step="1">
-    </fieldset>
-
     <div class="col-lg-12">
         <audio id="audiobook" controls="" style="width: 100%">
             <source th:src="'/api/v1/audiobook/'+${book.getId()}+'/stream'">
         </audio>
     </div>
 
-    <button class="btn" onclick="jumpBackward();">
-        -30 <img src="/controls/rewind.svg">
-    </button>
-    <button class="btn" onclick="pausePlay();">
-        <img id="play" src="/controls/play.svg">
-        <img hidden id="pause" src="/controls/pause.svg">
+    <div class="alert alert-secondary">
+        <fieldset class="form-group">
+            <input type="range" class="custom-range" id="playbackSlider" min="0" value="0" step="1">
+        </fieldset>
 
-    </button>
-    <button class="btn" onclick="jumpForward();">
-        +30 <img src="/controls/forward.svg">
-    </button>
+        <div class="row">
 
-    <fieldset class="form-group">
-        <label for="playbspeed" id="speedDisplay">1</label>
-        <input type="range" class="custom-range" id="playbspeed" min="0.5" max="3.5" value="1" step="0.1">
-    </fieldset>
+            <div class="col-lg-3">
+                <div class="center">
+                    <div style="width: 100%">
+                        <h5>Playbackspeed: <label id="speedDisplay">1</label></h5>
+                        <input type="range" class="custom-range" id="playbspeed" min="0.5" max="3.5" value="1.0"
+                               step="0.1">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:jumpBackward();" class="center">
+                    <img src="/controls/rewind.svg">
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:pausePlay();" class="center">
+                    <img id="play" src="/controls/play.svg">
+                    <img hidden id="pause" src="/controls/pause.svg">
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:jumpForward();" class="center">
+                    <img src="/controls/forward.svg">
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <div class="center">
+                    <img src="/controls/volume-off.svg">
+                    <input style="width: 100%" type="range" class="custom-range" min="0" max="100"
+                           value="100" step="1" id="volumeSlider"/>
+                    <img src="/controls/volume-up.svg">
+                </div>
 
+            </div>
+        </div>
+    </div>
 
     <script th:inline="javascript">
         let audio = $('#audiobook')[0];
         let playbackspeed = $('#playbspeed')[0];
-        /*<![CDATA[*/
+        let volumeSlider = $('#volumeSlider')[0];
+
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
-            audio.currentTime = [[${progress}]];
-            $('#playbackslider').attr("max", Math.ceil(audio.duration));
+            audio.currentTime = /*<![CDATA[*/ [[${progress}]]; /*]]>*/
+            $('#playbackSlider').attr("max", Math.ceil(audio.duration));
+            $('#playbackSlider').val(audio.currentTime);
         }
+
         audio.addEventListener("canplay", resumePlay)
-        /*]]>*/
+
         playbackspeed.oninput = function () {
             audio.playbackRate = playbackspeed.value;
             $('#speedDisplay').html(playbackspeed.value);
+        }
+
+        volumeSlider.oninput = function (){
+            audio.volume = volumeSlider.value /100;
+        }
+
+        $('#playbackSlider')[0].oninput = function () {
+            audio.currentTime = $('#playbackSlider')[0].value;
         }
 
         function pausePlay() {
@@ -107,11 +144,12 @@
         }
 
         function updateSlider() {
-            $('#playbackslider').val(audio.currentTime);
+            audio.currentTime = $('#playbackSlider')[0].value;
         }
 
-        // audio.addEventListener("canplay", updateSlider)
-        audio.addEventListener("timeupdate", updateSlider)
+        audio.addEventListener("oninput", updateSlider)
+
+        // audio.addEventListener("timeupdate", updateSlider)
 
 
         function updateCurrentTime() {
@@ -122,8 +160,25 @@
         }
 
 
+        function getTimeHHMMSS(seconds) {
+            let s = seconds % 60;
+            let m = ((seconds - s) / 60) % 60;
+            let h = (seconds - s - m * 60) / 3600;
+
+
+            return format(h) + ":" + format(m) + ":" + format(s);
+        }
+
+        function format(i) {
+            if (i < 10) {
+                return '0' + i;
+            } else {
+                return i;
+            }
+        }
+
         $(function () {
-            setInterval(updateCurrentTime, 1000);
+            setInterval(updateCurrentTime, 10000);
         });
     </script>
 </th:block>
