@@ -1,6 +1,7 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -16,6 +17,9 @@ public class Book {
     private Long length;
     private String filename;
     private String title;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<Tag> tags;
 
     public Author getAuthor() {
         return author;
