@@ -15,20 +15,8 @@ public class Tag {
     private String name;
     private boolean removable;
 
-    @ManyToMany
-    @JoinTable(
-            name = "userk_tag",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_tag",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
+    @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
 
     public Tag() {

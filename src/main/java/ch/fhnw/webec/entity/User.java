@@ -26,7 +26,12 @@ public class User {
     @JoinColumn(name = "current_book_id")
     private Book currentBook;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name = "user_tag",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private Set<Tag> tags;
 
 
