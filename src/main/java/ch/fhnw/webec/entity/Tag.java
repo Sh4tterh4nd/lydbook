@@ -13,7 +13,8 @@ public class Tag {
 
     @Column(unique = true)
     private String name;
-    private boolean removable;
+
+    private boolean removable = false;
 
 
     @ManyToMany(mappedBy = "tags")
