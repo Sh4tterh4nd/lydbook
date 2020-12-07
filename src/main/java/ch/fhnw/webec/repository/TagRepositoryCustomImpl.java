@@ -1,6 +1,5 @@
 package ch.fhnw.webec.repository;
 
-import ch.fhnw.webec.entity.Book;
 import ch.fhnw.webec.entity.Tag;
 import org.springframework.stereotype.Repository;
 
@@ -22,13 +21,13 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
     }
 
     @Override
-    public Tag findFirstByName(String name) {
-        return findFirstByName(name, false);
+    public Tag findOrCreateFirstByName(String name) {
+        return findOrCreateFirstByName(name, false);
     }
 
     @Override
     @Transactional
-    public Tag findFirstByName(String name, boolean isRemovable) {
+    public Tag findOrCreateFirstByName(String name, boolean isRemovable) {
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> criteriaQ = cBuild.createQuery(Tag.class);
 
