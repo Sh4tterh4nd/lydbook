@@ -28,12 +28,19 @@
                 <h4>Author: <a th:href="'/authors/'+${book.getAuthor().getId()}"
                                th:text="${book.getAuthor().getName()}"></a></h4>
                 <h4 th:text="'Duration: ' + ${book.getLength()}">Duration: 15min</h4>
+                <h4>Tags:</h4>
+                <div class="bs-component mb-4">
+                    <th:block  th:each="tag: ${book.getTags()}">
+                    <span th:class="${tag.isRemovable()? 'badge badge-primary':'badge badge-info'}"
+                          th:text="${tag.getName()}">Primary</span>
+                    </th:block>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-lg-12">
         <!--        <audio id="audiobook" controls="" style="width: 100%">-->
-        <audio id="audiobook" style="width: 100%">
+        <audio id="audiobook">
             <source th:src="'/api/v1/audiobook/'+${book.getId()}+'/stream'">
         </audio>
     </div>
@@ -88,7 +95,7 @@
         var interval;
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);
-            audio.currentTime = /*<![CDATA[*/ [[${progress !=null}? ${progress.getProgress()}:'0']]; /*]]>*/
+            audio.currentTime = /*<![CDATA[*/ [[${progress !=null}? ${progress.getProgress()} : '0']]; /*]]>*/
             $('#playbackSlider').attr("max", Math.ceil(audio.duration));
             $('#playbackSlider').val(audio.currentTime);
         }
