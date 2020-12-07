@@ -1,6 +1,7 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,12 +15,18 @@ public class Book {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
     private Author author;
+
     private Long length;
     private String filename;
     private String title;
 
-    @ManyToMany(mappedBy = "books")
-    private Set<Tag> tags;
+    @ManyToMany
+    @JoinTable(
+            name = "book_tag",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
     public Author getAuthor() {
         return author;
@@ -56,4 +63,17 @@ public class Book {
     public Long getId() {
         return id;
     }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTag (Tag tag){
+        this.tags.add(tag);
+    }
+
 }
