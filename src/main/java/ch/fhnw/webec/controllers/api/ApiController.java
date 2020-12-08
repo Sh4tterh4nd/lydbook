@@ -1,7 +1,8 @@
-package ch.fhnw.webec.controllers;
+package ch.fhnw.webec.controllers.api;
 
 import ch.fhnw.webec.entity.Author;
 import ch.fhnw.webec.entity.Book;
+import ch.fhnw.webec.entity.Tag;
 import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.services.ImportAudiobookService;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -69,15 +71,15 @@ public class ApiController {
         return bookId;
     }
 
+
     @GetMapping(value = "{bookId}/stream")
-    public ResponseEntity<FileSystemResource> getFile(@PathVariable("bookId") Long bookId) {
-        Book book= bookRepository.findBookById(bookId);
-        if (book== null) return ResponseEntity.notFound().build();
+    public ResponseEntity<FileSystemResource> streamFile(@PathVariable("bookId") Long bookId) {
+        Book book = bookRepository.findBookById(bookId);
+        if (book == null) return ResponseEntity.notFound().build();
 
         Path bookPath = Paths.get("data", book.getFilename());
         return ResponseEntity.ok().body(new FileSystemResource(bookPath));
     }
-
 
     @DeleteMapping("{bookId}")
     public String deleteBook() {
@@ -85,10 +87,23 @@ public class ApiController {
     }
 
     @PostMapping("{bookId}/progress")
-    public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, @AuthenticationPrincipal Principal principal){
-        if (AudiobookUtil.isNumeric(body)){
+    public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, @AuthenticationPrincipal Principal principal) {
+        if (AudiobookUtil.isNumeric(body)) {
             progressService.updateProgress(principal.getName(), bookId, (int) Double.parseDouble(body));
         }
         return "";
+    }
+
+    @GetMapping("/tag")
+    public List<Tag> getTags() {
+        List<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("Test", 1L));
+        tags.add(new Tag("Haus", 2L));
+        tags.add(new Tag("Brot", 3L));
+        tags.add(new Tag("Auto", 4L));
+        tags.add(new Tag("Pferd", 4L, false));
+        tags.add(new Tag("Wetter", 4L, false));
+
+        return tags;
     }
 }
