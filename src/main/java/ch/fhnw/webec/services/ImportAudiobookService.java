@@ -48,8 +48,8 @@ public class ImportAudiobookService {
 
 
         Author a = authorRepository.findOrCreateAuthorByName(authorName);
-        Tag authorTag = tagRepository.findOrCreateFirstByName(a.getName());
-        Tag audiobookTag = tagRepository.findOrCreateFirstByName("Audiobook");
+        Tag authorTag = tagRepository.findOrCreateFirstByName(a.getName(), false);
+        Tag audiobookTag = tagRepository.findOrCreateFirstByName("Audiobook", false);
 
         book.addTag(authorTag);
         book.addTag(audiobookTag);

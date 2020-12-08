@@ -22,7 +22,7 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
 
     @Override
     public Tag findOrCreateFirstByName(String name) {
-        return findOrCreateFirstByName(name, false);
+        return findOrCreateFirstByName(name, true);
     }
 
     @Override
