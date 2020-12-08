@@ -44,13 +44,12 @@ public class ImportAudiobookService {
             book.setTitle(id3v2Tag.getAlbum());
             authorName = id3v2Tag.getArtist();
         }
-        System.out.println(mp3file.isVbr());
+//        System.out.println(mp3file.isVbr());
 
 
         Author a = authorRepository.findOrCreateAuthorByName(authorName);
         Tag authorTag = tagRepository.findOrCreateFirstByName(a.getName());
         Tag audiobookTag = tagRepository.findOrCreateFirstByName("Audiobook");
-
 
         book.addTag(authorTag);
         book.addTag(audiobookTag);

@@ -14,7 +14,7 @@ public class Tag {
     @Column(unique = true)
     private String name;
 
-    private boolean removable = false;
+    private boolean removable = true;
 
 
     @ManyToMany(mappedBy = "tags")
@@ -26,6 +26,11 @@ public class Tag {
     public Tag(String name, Long id) {
         this.name = name;
         this.id = id;
+    }
+    public Tag(String name, Long id, boolean removable) {
+        this.name = name;
+        this.id = id;
+        this.removable =removable;
     }
 
     public Tag(String name) {
