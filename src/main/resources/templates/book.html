@@ -12,8 +12,8 @@
         <!--        full width if not ADMIn-->
         <div class="col-lg-11" th:class="${#authorization.expression('hasRole(''ADMIN'')')}? 'col-lg-11':'col-lg-12'">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a th:href="'/authors/'+${book.getAuthor()}"
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="'/authors/'+${book.getAuthor().getId()}"
                                                th:text="${book.getAuthor().getName()}"></a></li>
                 <li class="breadcrumb-item active" th:text="${book.getTitle()}">Data</li>
             </ol>
