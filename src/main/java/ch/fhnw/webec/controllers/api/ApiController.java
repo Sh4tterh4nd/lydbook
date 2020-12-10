@@ -66,19 +66,6 @@ public class ApiController {
         return ResponseEntity.ok().body(new FileSystemResource(bookPath));
     }
 
-    @PostMapping("{bookId}/progress")
-    public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, @AuthenticationPrincipal Principal principal) {
-        if (AudiobookUtil.isNumeric(body)) {
-            progressService.updateProgress(principal.getName(), bookId, (int) Double.parseDouble(body));
-        }
-        return "";
-    }
-
-
-    @PostMapping("{bookId}/tags")
-    public String updateTags(@PathVariable("bookId") Long bookId, Book book) {
-        return "";
-    }
 
     @PutMapping("{bookId}/")
     public ResponseEntity updateBook(@PathVariable("bookId") Long bookId, @RequestBody Book book) {
@@ -91,16 +78,8 @@ public class ApiController {
 
     }
 
-    @GetMapping("/tag")
-    public List<Tag> getTags() {
-        List<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("Test", 1L));
-        tags.add(new Tag("Haus", 2L));
-        tags.add(new Tag("Brot", 3L));
-        tags.add(new Tag("Auto", 4L));
-        tags.add(new Tag("Pferd", 4L, false));
-        tags.add(new Tag("Wetter", 4L, false));
-
-        return tags;
+    @DeleteMapping("{bookId}/")
+    public void deleteBook(@PathVariable("bookId") Long bookId){
+        audiobookService.deleteAudiobook(bookId);
     }
 }

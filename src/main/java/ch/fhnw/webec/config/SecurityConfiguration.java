@@ -1,6 +1,8 @@
 package ch.fhnw.webec.config;
 
+import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.entity.UserRole;
+import ch.fhnw.webec.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor;
-import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
 import javax.sql.DataSource;
 
@@ -53,7 +53,9 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                     .authorizeRequests()
                     .antMatchers("/css/**","/js/**").permitAll()
                     .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-                    .antMatchers(HttpMethod.POST,"/api/v1/**").hasRole(UserRole.ADMIN.name())
+                    .antMatchers("/api/v1/progress/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.USER.name())
+                    .antMatchers(HttpMethod.POST,"/api/v1/audiobook/**").hasRole(UserRole.ADMIN.name())
+                    .antMatchers(HttpMethod.PUT,"/api/v1/audiobook/**").hasRole(UserRole.ADMIN.name())
                     .anyRequest().authenticated().and()
                     .csrf().ignoringAntMatchers("/api/**")
                     .and()
@@ -63,6 +65,9 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                     .and()
                     .logout()
                     .permitAll();
+
+//
+//
 //            httpSecurity.authorizeRequests()
 //                    .antMatchers("/**").permitAll().
 //            and().csrf().ignoringAntMatchers("/api/**");

@@ -10,11 +10,15 @@ import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 @Service
@@ -22,22 +26,20 @@ public class AudiobookService {
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final TagRepository tagRepository;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     public AudiobookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.tagRepository = tagRepository;
     }
-
+@Transactional
     public void addAudiobook(String originalFilename, Path file) throws InvalidDataException, IOException, UnsupportedTagException {
         Book book = new Book();
         Mp3File mp3file = new Mp3File(file);
         String authorName = "";
-        System.out.println(mp3file.getLengthInMilliseconds());
-        System.out.println(mp3file.getLengthInSeconds());
-        System.out.println(mp3file.getLength());
-        System.out.println(mp3file.isVbr());
-        book.setLength(mp3file.getLengthInSeconds());
+
+        book.setLength(mp3file.getLengthInMilliseconds());
         book.setFilename(file.getFileName().toString());
         if (mp3file.hasId3v1Tag()) {
             ID3v1 id3v1Tag = mp3file.getId3v1Tag();
@@ -96,6 +98,19 @@ public class AudiobookService {
         }
         bookRepository.save(oldBook);
         tagRepository.removeUnusedTags();
+    }
 
+    @Transactional
+    public void deleteAudiobook(Long id) {
+        Book book = bookRepository.findBookById(id);
+        Path data = Paths.get("data", book.getFilename());
+
+        try {
+            Files.deleteIfExists(data);
+        } catch (IOException e) {
+            log.error("The file:{} corresponding to the Audiobook: {} couldn't be deleted.", book.getFilename(), book.getTitle());
+        }
+
+        bookRepository.deleteBookById(id);
     }
 }
