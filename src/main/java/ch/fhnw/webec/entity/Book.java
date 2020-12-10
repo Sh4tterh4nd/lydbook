@@ -14,7 +14,7 @@ public class Book {
     @SequenceGenerator(name = "book_seq_gen", sequenceName = "book_sequence", initialValue = 10000)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
@@ -28,7 +28,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     public Author getAuthor() {
         return author;
@@ -70,7 +70,7 @@ public class Book {
         this.id = id;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
