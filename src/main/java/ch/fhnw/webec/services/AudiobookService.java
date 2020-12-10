@@ -95,6 +95,7 @@ public class AudiobookService {
             }
         }
         bookRepository.save(oldBook);
+        tagRepository.removeUnusedTags();
 
     }
 }
