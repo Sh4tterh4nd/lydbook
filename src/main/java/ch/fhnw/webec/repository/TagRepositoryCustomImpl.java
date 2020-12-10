@@ -4,10 +4,7 @@ import ch.fhnw.webec.entity.Tag;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -49,5 +46,20 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
         entityManager.persist(newTag);
 
         return newTag;
+    }
+
+    @Override
+    @Transactional
+    public void removeUnusedTags(){
+        CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
+        CriteriaDelete<Tag> criteriaQ = cBuild.createCriteriaDelete(Tag.class);
+
+        Root<Tag> tag = criteriaQ.from(Tag.class);
+        Predicate namePredicate = cBuild.isEmpty(tag.get("books"));
+
+        criteriaQ.where(namePredicate);
+        entityManager
+                .createQuery(criteriaQ)
+                .executeUpdate();
     }
 }

@@ -189,7 +189,7 @@
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: {
-                url: '/api/v1/audiobook/tag',
+                url: '/api/v1/tags',
                 filter: function (tags) {
                     return tags.filter((s) => s.removable).map((r) => ({name: r.name}));
                 },
