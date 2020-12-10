@@ -16,12 +16,12 @@ public class Tag {
 
     private boolean removable = true;
 
-
     @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
 
     public Tag() {
     }
+
 
     public Tag(String name, Long id) {
         this.name = name;
@@ -60,5 +60,18 @@ public class Tag {
 
     public void setRemovable(boolean removable) {
         this.removable = removable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return name.equals(tag.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
