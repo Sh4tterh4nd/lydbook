@@ -100,40 +100,91 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <dl class="row">
-<!--                        Non deletable tags-->
-                        <dt class="col-sm-2">Tags:</dt>
-                        <dd class="col-sm-10">
-                            <div class="bs-component mb-4">
-                                <th:block th:each="tag: ${book.getTags()}">
+                    <form th:action="@{/}" id="editForm">
+                        <dl class="row">
+                            <dt class="col-sm-3">Title:</dt>
+                            <dd class="col-sm-9"><input type="text" name="title" id="booktitle" minlength="1" required
+                                                        th:value="${book.getTitle()}" class="form-control"></dd>
+
+
+                            <!--                            Author-->
+                            <dl class="col-sm-3">Author:</dl>
+                            <dd class="col-sm-9">
+                                <input name="author" type="text" list="auths" class="form-control"
+                                       th:value="${book.getAuthor().getName()}"/>
+                                <datalist id="auths">
+                                    <th:block th:each="author: ${authors}">
+                                        <option th:text="${author.getName()}"></option>
+                                    </th:block>
+                                </datalist>
+                            </dd>
+
+                            <!--                        Non deletable tags-->
+                            <dt class="col-sm-3">Tags:</dt>
+                            <dd class="col-sm-9">
+                                <div class="bs-component">
+                                    <th:block th:each="tag: ${book.getTags()}">
                                         <span th:class="${tag.isRemovable()? 'badge badge-primary':'badge badge-info'}"
                                               th:text="${tag.getName()}"></span>
-                                </th:block>
-                            </div>
-                        </dd>
-<!--                        Additional Tags-->
-                        <dt class="col-sm-2">Additional Tags:</dt>
-                        <dd class="col-sm-10">
-                            <select id="taginput" multiple data-role="tagsinput">
-                                <th:block th:each="tag: ${book.getTags()}">
-                                    <option th:if="${tag.isRemovable()}" th:text="${tag.getName()}"
-                                            th:value="${tag.getName()}">Tag</option>
-                                </th:block>
-                            </select>
-                        </dd>
-                    </dl>
+                                    </th:block>
+                                </div>
+                            </dd>
+                            <!--                        Additional Tags-->
+                            <dt class="col-sm-3">Additional Tags:</dt>
+                            <dd class="col-sm-9">
+                                <select id="taginput" multiple data-role="tagsinput">
+                                    <th:block th:each="tag: ${book.getTags()}">
+                                        <option th:if="${tag.isRemovable()}" th:text="${tag.getName()}"
+                                                th:value="${tag.getName()}">Tag
+                                        </option>
+                                    </th:block>
+                                </select>
+                            </dd>
+                        </dl>
 
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn btn-info">Update</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button id="submitEdit" type="button" class="btn btn btn-info">Update</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+        let bookID = /*<![CDATA[*/ [[${book.getId()}]]; /*]]>*/
+
+        //submit edited book data
+        $('#submitEdit').click(function (event) {
+            var data = new FormData($('#editForm')[0]);
+
+            let arr = $("#taginput").tagsinput('items');
+            let tags = JSON.parse('[' + Array.from(arr, val => '{"name":"' + val + '"}').toString() + ']');
+
+            var book = new Object();
+            let author = new Object();
+            author.name = data.get("author");
+            book.id = bookID;
+            book.title = data.get("title");
+            book.author = author;
+            book.tags = tags;
+
+            $.ajax({
+                type: "PUT",
+                url: "/api/v1/audiobook/" + bookID + "/",
+                data: JSON.stringify(book),
+                contentType: 'application/json',
+                processData: false,
+                timeout: 10000,
+                success: function () {
+                    location.reload();
+                }
+            })
+
+        });
+        // Taginput
         let typaheadTags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -146,7 +197,6 @@
             }
         });
         typaheadTags.initialize();
-
         $('#taginput').tagsinput({
             typeaheadjs: {
                 name: 'tags',
@@ -156,14 +206,11 @@
             }
         });
 
-    </script>
 
-
-    <script th:inline="javascript">
+        //Audioplayer
         let audio = $('#audiobook')[0];
         let playbackspeed = $('#playbspeed')[0];
         let volumeSlider = $('#volumeSlider')[0];
-        let bookID = /*<![CDATA[*/ [[${book.getId()}]]; /*]]>*/
         var interval;
         let resumePlay = function (e) {
             e.target.removeEventListener("canplay", resumePlay, false);

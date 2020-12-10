@@ -47,7 +47,7 @@ public class AdminController {
     public String createUser(User user, Model model) {
         userService.createUser(user);
         model.addAttribute("users", userRepository.findAllByOrderByUsernameAsc());
-        return "/admin/users";
+        return "redirect:/admin/users";
     }
 
 

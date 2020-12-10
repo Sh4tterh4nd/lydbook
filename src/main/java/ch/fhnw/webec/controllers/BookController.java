@@ -3,6 +3,7 @@ package ch.fhnw.webec.controllers;
 import ch.fhnw.webec.entity.Book;
 import ch.fhnw.webec.entity.Progress;
 import ch.fhnw.webec.entity.User;
+import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.repository.ProgressRepository;
 import ch.fhnw.webec.repository.UserRepository;
@@ -19,11 +20,13 @@ public class BookController {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final ProgressRepository progressRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository) {
+    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.progressRepository = progressRepository;
+        this.authorRepository = authorRepository;
     }
 
     @GetMapping("/book/{id}")
@@ -33,6 +36,7 @@ public class BookController {
         Progress progress = progressRepository.findFirstByBookAndUser(book,user);
         model.addAttribute("book", book);
         model.addAttribute("progress", progress);
+        model.addAttribute("authors", authorRepository.findAllByOrderByNameAsc());
         return "book";
     }
 
