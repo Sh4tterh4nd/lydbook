@@ -1,7 +1,9 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +28,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tag> tags = new HashSet<>();
+    private List<Tag> tags = new ArrayList<>();
 
     public Author getAuthor() {
         return author;
@@ -64,16 +66,29 @@ public class Book {
         return id;
     }
 
-    public Set<Tag> getTags() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
-
     public void addTag (Tag tag){
-        this.tags.add(tag);
+        if (!this.tags.contains(tag)) {
+            this.tags.add(tag);
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", author=" + author +
+                ", length=" + length +
+                ", filename='" + filename + '\'' +
+                ", title='" + title + '\'' +
+                ", tags=" + tags +
+                '}';
+    }
 }
