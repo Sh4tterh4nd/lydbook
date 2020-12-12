@@ -1,7 +1,10 @@
 package ch.fhnw.webec.entity;
 
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "progress",uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","book_id"}))
@@ -21,6 +24,10 @@ public class Progress {
     private Book book;
 
     private Integer progress;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedtime;
 
     public User getUser() {
         return user;
@@ -44,5 +51,13 @@ public class Progress {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
+    }
+
+    public Date getUpdatedtime() {
+        return updatedtime;
+    }
+
+    public void setUpdatedtime(Date updatedtime) {
+        this.updatedtime = updatedtime;
     }
 }
