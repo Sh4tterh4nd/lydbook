@@ -1,6 +1,7 @@
 package ch.fhnw.webec.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,11 +33,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tag> tags;
-
-
-    @Column(name = "shareall")
-    private boolean shareAll;
+    private Set<Tag> tags = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -74,14 +71,6 @@ public class User {
         this.role = role;
     }
 
-    public boolean isShareAll() {
-        return shareAll;
-    }
-
-    public void setShareAll(boolean shareAll) {
-        this.shareAll = shareAll;
-    }
-
     public List<Progress> getProgressList() {
         return progressList;
     }
@@ -96,5 +85,26 @@ public class User {
 
     public void setCurrentBook(Book currentBook) {
         this.currentBook = currentBook;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", progressList=" + progressList +
+                ", currentBook=" + currentBook +
+                ", tags=" + tags +
+                ", role=" + role +
+                '}';
     }
 }

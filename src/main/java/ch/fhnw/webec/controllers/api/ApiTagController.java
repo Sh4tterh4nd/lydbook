@@ -20,7 +20,8 @@ public class ApiTagController {
 
     @GetMapping
     public List<Tag> getAllTags() {
-        return tagRepository.findAllByOrderByName();
+        List<Tag> tags = tagRepository.findAllByOrderByName();
+        return tags;
     }
 
 }

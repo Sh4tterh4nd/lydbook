@@ -219,12 +219,12 @@
 
         //submit edited book data
         $('#submitEdit').click(function (event) {
-            var data = new FormData($('#editForm')[0]);
+            let data = new FormData($('#editForm')[0]);
 
             let arr = $("#taginput").tagsinput('items');
             let tags = JSON.parse('[' + Array.from(arr, val => '{"name":"' + val + '"}').toString() + ']');
 
-            var book = new Object();
+            let book = new Object();
             let author = new Object();
             author.name = data.get("author");
             book.id = bookID;

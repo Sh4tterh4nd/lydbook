@@ -26,7 +26,7 @@ public class UserService {
     public void createUser(User user) {
         user.setRole(UserRole.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.addTag(tagRepository.findFirstByName("Audiobook"));
+        user.addTag(tagRepository.findOrCreateFirstByName("Audiobook",false));
         userRepository.save(user);
     }
 
@@ -35,11 +35,10 @@ public class UserService {
         userRepository.deleteUserById(id);
     }
 
-    @Transactional
     public User getUser(Long id) {
         User user = userRepository.findUserById(id);
         user.setPassword("");
-        user.setProgressList(new ArrayList<>());
+        user.getProgressList().clear();
         return user;
     }
 

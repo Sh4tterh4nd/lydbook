@@ -3,9 +3,11 @@ package ch.fhnw.webec.services;
 import ch.fhnw.webec.entity.Author;
 import ch.fhnw.webec.entity.Book;
 import ch.fhnw.webec.entity.Tag;
+import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.repository.TagRepository;
+import ch.fhnw.webec.repository.UserRepository;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
@@ -19,21 +21,24 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
+import java.util.*;
 
 @Service
 public class AudiobookService {
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    public AudiobookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository) {
+    public AudiobookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.tagRepository = tagRepository;
+        this.userRepository = userRepository;
     }
-@Transactional
+
+    @Transactional
     public void addAudiobook(String originalFilename, Path file) throws InvalidDataException, IOException, UnsupportedTagException {
         Book book = new Book();
         Mp3File mp3file = new Mp3File(file);
@@ -113,4 +118,15 @@ public class AudiobookService {
 
         bookRepository.deleteBookById(id);
     }
+
+    @Transactional
+    public List<Book> getAllowedBooksByUsername(String username) {
+        Set<Book> bookSet = new HashSet<>();
+        User user = userRepository.findUserByUsername(username);
+        for (Tag tag : user.getTags()) {
+            tag.getBooks().forEach(book -> bookSet.add(book));
+        }
+        return new ArrayList<>(bookSet);
+    }
+
 }

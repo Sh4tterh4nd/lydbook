@@ -32,10 +32,6 @@ public class AdminController {
         return "/admin/upload";
     }
 
-    @GetMapping("/admin/permissions")
-    public String permissionView() {
-        return "/admin/permissions";
-    }
 
     @GetMapping("/admin/users")
     public String usersView(Model model) {
@@ -48,11 +44,5 @@ public class AdminController {
         userService.createUser(user);
         model.addAttribute("users", userRepository.findAllByOrderByUsernameAsc());
         return "redirect:/admin/users";
-    }
-
-
-    @DeleteMapping("/admin/users/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        return "/admin/users";
     }
 }
