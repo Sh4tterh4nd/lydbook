@@ -8,6 +8,9 @@ import ch.fhnw.webec.repository.ProgressRepository;
 import ch.fhnw.webec.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 public class ProgressService {
     private final ProgressRepository progressRepository;
@@ -36,5 +39,12 @@ public class ProgressService {
         progressRepository.save(progress);
     }
 
+    public List<Progress> getMostRecentProgressByUser(String username){
+        User userByUsername = userRepository.findUserByUsername(username);
 
+        List<Progress> progressList = userByUsername.getProgressList();
+        progressList.sort(Comparator.comparing(Progress::getUpdatedtime).reversed());
+
+        return progressList;
+    }
 }
