@@ -11,13 +11,13 @@
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div  class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul sec:authorize="isAnonymous()" class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
             </ul>
-            <ul sec:authorize="isAuthenticated()" class="navbar-nav">
+            <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/">Current</a>
                 </li>
@@ -27,22 +27,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/books/">Books</a>
                 </li>
-                <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download"
-                       aria-expanded="false">Admin <span class="caret"></span></a>
-                    <div class="dropdown-menu" aria-labelledby="download">
-                        <a class="dropdown-item" rel="noopener"
-                           href="/admin/upload">Upload Audiobook</a>
-                        <a class="dropdown-item" rel="noopener"
-                           href="/admin/users">Users</a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" id="logout"></form>
-                    <a class="nav-link" href="" onclick="$(`#logout`).submit(); return false;">Logout</a>
-                </li>
             </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Account</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/myaccount">MyAccount</a>
+                            <th:block sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item" rel="noopener"
+                                   href="/admin/upload">Upload Audiobook</a>
+                                <a class="dropdown-item" rel="noopener"
+                                   href="/admin/users">Users</a>
+                            </th:block>
+                            <form th:action="@{/logout}" method="post" id="logout"></form>
+                            <a class="dropdown-item" href="" onclick="$(`#logout`).submit(); return false;">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
         </div>
     </div>

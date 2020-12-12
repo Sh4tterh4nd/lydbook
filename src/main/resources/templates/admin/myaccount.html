@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>MyAccount</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="d-flex justify-content-center">
+        <div class="col-lg-6">
+            <div id="failed" hidden class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                Failed! Your old password was wrong.
+            </div>
+            <div id="success" hidden class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                The password has been successfully updated.
+            </div>
+            <div class="bs-component">
+                <form id="updatePasswordForm" th:action="@{/mypassword}" method="post" th:method="post">
+                    <div class="card">
+                        <h3 class="card-header">Login</h3>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input required class="form-control form-control-lg" type="password"
+                                       placeholder="Current Password" name="currentPassword" value=""/>
+                            </div>
+                            <div class="form-group">
+                                <input required class="form-control form-control-lg" type="password"
+                                       placeholder="New Password" name="newPassword" value=""/>
+                            </div>
+                        </div>
+                        <input id="updatePasswordSubmit" class="btn btn-primary btn-lg btn-block" type="button"
+                               value="Login"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#updatePasswordSubmit').click(function (event) {
+            let data = new FormData($('#updatePasswordForm')[0]);
+            let passwordUpdate = new Object();
+            passwordUpdate.currentPassword = data.get("currentPassword");
+            passwordUpdate.newPassword = data.get("newPassword");
+            $('#updatePasswordSubmit').attr('disabled');
+            $.ajax({
+                type: "PUT",
+                url: "/api/v1/user/password",
+                data: JSON.stringify(passwordUpdate),
+                contentType: 'application/json',
+                processData: false,
+                timeout: 10000,
+                success: function (response) {
+                    if (response == false) {
+                        $('#failed').removeAttr('hidden');
+                        $('#success').attr('hidden');
+                    } else {
+                        $('#failed').attr('hidden');
+                        $('#success').removeAttr('hidden');
+                    }
+                    $('#updatePasswordSubmit').removeAttr('disabled');
+                }
+            })
+        });
+    </script>
+</th:block>
+</body>
+</html>
