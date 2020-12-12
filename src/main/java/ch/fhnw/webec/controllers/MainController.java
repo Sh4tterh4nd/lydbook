@@ -19,19 +19,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/authors/")
-    public String authors(Model model){
-        model.addAttribute("authors", authorRepository.findAllByOrderByNameAsc());
-        return "authors";
-    }
-
-    @GetMapping("/authors/{id}")
-    public String author(Model model, @PathVariable("id") Long id){
-        model.addAttribute("author", authorRepository.findAuthorById(id));
-        return "author";
-    }
-
-
     @GetMapping("/login")
     public String login(){
         return "login";
