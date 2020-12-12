@@ -1,5 +1,6 @@
 package ch.fhnw.webec.services;
 
+import ch.fhnw.webec.dao.DAOPassword;
 import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.entity.UserRole;
 import ch.fhnw.webec.repository.TagRepository;
@@ -26,7 +27,7 @@ public class UserService {
     public void createUser(User user) {
         user.setRole(UserRole.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.addTag(tagRepository.findOrCreateFirstByName("Audiobook",false));
+        user.addTag(tagRepository.findOrCreateFirstByName("Audiobook", false));
         userRepository.save(user);
     }
 
@@ -52,5 +53,15 @@ public class UserService {
         updatedUser.getTags().forEach(t -> user.addTag(t));
 
         userRepository.save(user);
+    }
+
+    public boolean updatePassword(String username, DAOPassword password) {
+        User user = userRepository.findUserByUsername(username);
+        if (passwordEncoder.matches(password.getCurrentPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }
