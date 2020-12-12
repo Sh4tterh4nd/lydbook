@@ -1,5 +1,8 @@
 package ch.fhnw.webec.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,6 +19,7 @@ public class Tag {
 
     private boolean removable = true;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
 
@@ -60,6 +64,14 @@ public class Tag {
 
     public void setRemovable(boolean removable) {
         this.removable = removable;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override

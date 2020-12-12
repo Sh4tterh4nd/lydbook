@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long>, TagRepositoryCustom {
     List<Tag> findAllByOrderByName();
+    Tag findFirstByName(String name);
 }
