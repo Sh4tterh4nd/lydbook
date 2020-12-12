@@ -5,6 +5,8 @@ import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.entity.UserRole;
 import ch.fhnw.webec.repository.TagRepository;
 import ch.fhnw.webec.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TagRepository tagRepository;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TagRepository tagRepository) {
         this.userRepository = userRepository;
@@ -28,12 +31,14 @@ public class UserService {
         user.setRole(UserRole.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.addTag(tagRepository.findOrCreateFirstByName("Audiobook", false));
+        log.info("User {} created.", user.getUsername());
         userRepository.save(user);
     }
 
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteUserById(id);
+        log.info("User with the id: {} has been deleted", id);
     }
 
     public User getUser(Long id) {
@@ -51,7 +56,7 @@ public class UserService {
         }
         user.getTags().clear();
         updatedUser.getTags().forEach(t -> user.addTag(t));
-
+        log.info("Tags or Password of User {} have been updated by an admin", user.getUsername());
         userRepository.save(user);
     }
 
@@ -60,8 +65,10 @@ public class UserService {
         if (passwordEncoder.matches(password.getCurrentPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userRepository.save(user);
+            log.info("Password of user {} has been successfully updated.", user.getUsername());
             return true;
         }
+        log.info("Update password of user {} has failed.", user.getUsername());
         return false;
     }
 }

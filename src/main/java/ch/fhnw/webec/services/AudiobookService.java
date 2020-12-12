@@ -67,6 +67,7 @@ public class AudiobookService {
         book.addTag(audiobookTag);
         book.setAuthor(a);
         bookRepository.save(book);
+        log.info("Audiobook: {} by {} has been added.",book.getTitle(), book.getAuthor().getName());
     }
 
     @Transactional
@@ -93,7 +94,7 @@ public class AudiobookService {
             }
         }
 
-//add new tags
+        //add new tags
         iterator = updatedBook.getTags().iterator();
         while (iterator.hasNext()) {
             Tag tag = iterator.next();
@@ -103,6 +104,7 @@ public class AudiobookService {
         }
         bookRepository.save(oldBook);
         tagRepository.removeUnusedTags();
+        log.info("Audiobook: {} has been updated.", oldBook.getTitle());
     }
 
     @Transactional
