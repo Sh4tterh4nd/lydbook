@@ -126,7 +126,9 @@ public class AudiobookService {
         for (Tag tag : user.getTags()) {
             tag.getBooks().forEach(book -> bookSet.add(book));
         }
-        return new ArrayList<>(bookSet);
+        List<Book> bookList = new ArrayList<>(bookSet);
+        bookList.sort(Comparator.comparing(Book::getTitle));
+        return bookList;
     }
 
 }
