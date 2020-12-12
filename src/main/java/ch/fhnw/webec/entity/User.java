@@ -23,10 +23,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Progress> progressList;
 
-    @ManyToOne()
-    @JoinColumn(name = "current_book_id")
-    private Book currentBook;
-
     @ManyToMany
     @JoinTable(
             name = "user_tag",
@@ -79,14 +75,6 @@ public class User {
         this.progressList = progressList;
     }
 
-    public Book getCurrentBook() {
-        return currentBook;
-    }
-
-    public void setCurrentBook(Book currentBook) {
-        this.currentBook = currentBook;
-    }
-
     public Set<Tag> getTags() {
         return tags;
     }
@@ -102,7 +90,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", progressList=" + progressList +
-                ", currentBook=" + currentBook +
                 ", tags=" + tags +
                 ", role=" + role +
                 '}';
