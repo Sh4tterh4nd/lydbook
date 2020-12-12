@@ -56,6 +56,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                     .antMatchers("/api/v1/progress/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.USER.name())
                     .antMatchers(HttpMethod.POST,"/api/v1/audiobook/**").hasRole(UserRole.ADMIN.name())
                     .antMatchers(HttpMethod.PUT,"/api/v1/audiobook/**").hasRole(UserRole.ADMIN.name())
+                    .antMatchers(HttpMethod.PUT,"/api/v1/user/password").hasAnyRole(UserRole.ADMIN.name(), UserRole.USER.name())
                     .anyRequest().authenticated().and()
                     .csrf().ignoringAntMatchers("/api/**")
                     .and()
@@ -65,12 +66,6 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
                     .and()
                     .logout()
                     .permitAll();
-
-//
-//
-//            httpSecurity.authorizeRequests()
-//                    .antMatchers("/**").permitAll().
-//            and().csrf().ignoringAntMatchers("/api/**");
         }
 
     }
