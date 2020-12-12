@@ -6,6 +6,8 @@ import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.repository.ProgressRepository;
 import ch.fhnw.webec.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -16,6 +18,7 @@ public class ProgressService {
     private final ProgressRepository progressRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     public ProgressService(ProgressRepository progressService, BookRepository bookRepository, UserRepository userRepository) {
         this.progressRepository = progressService;
@@ -36,6 +39,7 @@ public class ProgressService {
         }
         progress.setProgress(progressTime);
 
+        log.info("Progress updated for Book: {} from User {}", progress.getBook().getTitle(), progress.getUser().getUsername());
         progressRepository.save(progress);
     }
 
