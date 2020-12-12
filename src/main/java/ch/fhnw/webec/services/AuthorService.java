@@ -2,6 +2,8 @@ package ch.fhnw.webec.services;
 
 import ch.fhnw.webec.entity.Author;
 import ch.fhnw.webec.entity.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
