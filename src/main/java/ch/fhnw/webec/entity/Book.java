@@ -1,11 +1,7 @@
 package ch.fhnw.webec.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +17,7 @@ public class Book {
     private Author author;
 
     private Long length;
-    private String filename;
+    private String dataName;
     private String title;
 
     @ManyToMany
@@ -48,12 +44,12 @@ public class Book {
         this.length = length;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getDataName() {
+        return dataName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setDataName(String filename) {
+        this.dataName = filename;
     }
 
     public String getTitle() {
@@ -88,7 +84,7 @@ public class Book {
                 "id=" + id +
                 ", author=" + author +
                 ", length=" + length +
-                ", filename='" + filename + '\'' +
+                ", filename='" + dataName + '\'' +
                 ", title='" + title + '\'' +
                 ", tags=" + tags +
                 '}';

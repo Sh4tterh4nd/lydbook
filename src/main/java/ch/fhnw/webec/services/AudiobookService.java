@@ -8,10 +8,7 @@ import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.repository.TagRepository;
 import ch.fhnw.webec.repository.UserRepository;
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import com.mpatric.mp3agic.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,22 +36,30 @@ public class AudiobookService {
     }
 
     @Transactional
-    public void addAudiobook(String originalFilename, Path file) throws InvalidDataException, IOException, UnsupportedTagException {
+    public void addAudiobook(String uuidName, Path file) throws InvalidDataException, UnsupportedTagException, IOException {
         Book book = new Book();
         Mp3File mp3file = new Mp3File(file);
         String authorName = "";
 
         book.setLength(mp3file.getLengthInMilliseconds());
-        book.setFilename(file.getFileName().toString());
-        if (mp3file.hasId3v1Tag()) {
+        book.setDataName(uuidName);
+        if (mp3file.hasId3v2Tag()) {
+            ID3v2 id3v2Tag = mp3file.getId3v2Tag();
+            book.setTitle(id3v2Tag.getAlbum());
+            authorName = id3v2Tag.getArtist();
+            byte[] cover = id3v2Tag.getAlbumImage();
+            if (cover != null) {
+                try {
+                    Files.write(Paths.get("data", uuidName.concat(".jpeg")), cover);
+                } catch (Exception e) {
+                    log.error("Couldn't write cover image for book {}.", book.getTitle());
+                }
+            }
+
+        } else if (mp3file.hasId3v1Tag()) {
             ID3v1 id3v1Tag = mp3file.getId3v1Tag();
             book.setTitle(id3v1Tag.getAlbum());
             authorName = id3v1Tag.getArtist();
-        }
-        if (mp3file.hasId3v2Tag()) {
-            ID3v1 id3v2Tag = mp3file.getId3v2Tag();
-            book.setTitle(id3v2Tag.getAlbum());
-            authorName = id3v2Tag.getArtist();
         }
 //        System.out.println(mp3file.isVbr());
 
@@ -67,7 +72,7 @@ public class AudiobookService {
         book.addTag(audiobookTag);
         book.setAuthor(a);
         bookRepository.save(book);
-        log.info("Audiobook: {} by {} has been added.",book.getTitle(), book.getAuthor().getName());
+        log.info("Audiobook: {} by {} has been added.", book.getTitle(), book.getAuthor().getName());
     }
 
     @Transactional
@@ -110,12 +115,12 @@ public class AudiobookService {
     @Transactional
     public void deleteAudiobook(Long id) {
         Book book = bookRepository.findBookById(id);
-        Path data = Paths.get("data", book.getFilename());
+        Path data = Paths.get("data", book.getDataName());
 
         try {
             Files.deleteIfExists(data);
         } catch (IOException e) {
-            log.error("The file:{} corresponding to the Audiobook: {} couldn't be deleted.", book.getFilename(), book.getTitle());
+            log.error("The file:{} corresponding to the Audiobook: {} couldn't be deleted.", book.getDataName(), book.getTitle());
         }
 
         bookRepository.deleteBookById(id);
