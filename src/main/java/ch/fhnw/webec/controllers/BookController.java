@@ -34,7 +34,10 @@ public class BookController {
 
     @GetMapping("/book/{id}")
     public String getBook(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
-        Book book = bookRepository.findBookById(id);
+        Book book = audiobookService.findAllowedBookByIdAndUsername(id, principal.getName());
+        if (book ==null){
+            return "redirect:/books/";
+        }
         User user = userRepository.findUserByUsername(principal.getName());
         Progress progress = progressRepository.findFirstByBookAndUser(book, user);
         model.addAttribute("book", book);
