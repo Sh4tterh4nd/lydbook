@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_seq_gen")
-    @SequenceGenerator(name = "tag_seq_gen", sequenceName = "tag_sequence", initialValue = 10000)
+    @SequenceGenerator(name = "tag_seq_gen", sequenceName = "tag_sequence", initialValue = 10001)
     private Long id;
 
     @Column(unique = true)
