@@ -16,7 +16,6 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    private Long length;
     private String dataName;
     private String title;
 
@@ -34,14 +33,6 @@ public class Book {
 
     public void setAuthor(Author author) {
         this.author = author;
-    }
-
-    public Long getLength() {
-        return length;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
     }
 
     public String getDataName() {
@@ -83,7 +74,6 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", author=" + author +
-                ", length=" + length +
                 ", filename='" + dataName + '\'' +
                 ", title='" + title + '\'' +
                 ", tags=" + tags +
