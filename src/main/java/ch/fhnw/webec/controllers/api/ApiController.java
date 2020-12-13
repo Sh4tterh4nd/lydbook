@@ -1,7 +1,6 @@
 package ch.fhnw.webec.controllers.api;
 
 import ch.fhnw.webec.entity.Book;
-import ch.fhnw.webec.entity.Tag;
 import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.services.AudiobookService;
@@ -11,8 +10,8 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,9 +19,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -43,7 +39,8 @@ public class ApiController {
 
     @PostMapping
     public void addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException, InvalidDataException, UnsupportedTagException {
-        String newFilename = UUID.randomUUID().toString().concat(AudiobookUtil.getFileEnding(multipartFile.getOriginalFilename()));
+        String uuidFileName = UUID.randomUUID().toString();
+        String newFilename = uuidFileName.concat(AudiobookUtil.getFileEnding(multipartFile.getOriginalFilename()));
         Path upload = Paths.get("data");
         if (Files.notExists(upload)) {
             Files.createDirectory(upload);
@@ -54,7 +51,7 @@ public class ApiController {
         outputStream.flush();
         outputStream.close();
 
-        audiobookService.addAudiobook(multipartFile.getOriginalFilename(), output);
+        audiobookService.addAudiobook(uuidFileName, output);
     }
 
     @GetMapping(value = "{bookId}/stream")
@@ -62,8 +59,16 @@ public class ApiController {
         Book book = bookRepository.findBookById(bookId);
         if (book == null) return ResponseEntity.notFound().build();
 
-        Path bookPath = Paths.get("data", book.getFilename());
+        Path bookPath = Paths.get("data", book.getDataName().concat(".mp3"));
         return ResponseEntity.ok().body(new FileSystemResource(bookPath));
+    }
+
+    @GetMapping(value = "{bookId}/cover", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    byte[] getCover(@PathVariable("bookId") Long bookId) throws IOException {
+        Book book = bookRepository.findBookById(bookId);
+
+        return Files.readAllBytes(Paths.get("data" , book.getDataName().concat(".jpeg")));
     }
 
 
@@ -79,7 +84,7 @@ public class ApiController {
     }
 
     @DeleteMapping("{bookId}/")
-    public void deleteBook(@PathVariable("bookId") Long bookId){
+    public void deleteBook(@PathVariable("bookId") Long bookId) {
         audiobookService.deleteAudiobook(bookId);
     }
 }
