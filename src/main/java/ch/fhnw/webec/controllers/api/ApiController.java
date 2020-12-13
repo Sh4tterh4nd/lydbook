@@ -12,6 +12,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -55,8 +57,8 @@ public class ApiController {
     }
 
     @GetMapping(value = "{bookId}/stream")
-    public ResponseEntity<FileSystemResource> streamFile(@PathVariable("bookId") Long bookId) {
-        Book book = bookRepository.findBookById(bookId);
+    public ResponseEntity<FileSystemResource> streamFile(@PathVariable("bookId") Long bookId, @AuthenticationPrincipal Principal principal) {
+        Book book = audiobookService.findAllowedBookByIdAndUsername(bookId, principal.getName());
         if (book == null) return ResponseEntity.notFound().build();
 
         Path bookPath = Paths.get("data", book.getDataName().concat(".mp3"));
@@ -65,10 +67,12 @@ public class ApiController {
 
     @GetMapping(value = "{bookId}/cover", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
-    byte[] getCover(@PathVariable("bookId") Long bookId) throws IOException {
-        Book book = bookRepository.findBookById(bookId);
-
-        return Files.readAllBytes(Paths.get("data" , book.getDataName().concat(".jpeg")));
+    byte[] getCover(@PathVariable("bookId") Long bookId, @AuthenticationPrincipal Principal principal) throws IOException {
+        Book book = audiobookService.findAllowedBookByIdAndUsername(bookId, principal.getName());
+        if (book == null) {
+            return new byte[0];
+        }
+        return Files.readAllBytes(Paths.get("data", book.getDataName().concat(".jpeg")));
     }
 
 
