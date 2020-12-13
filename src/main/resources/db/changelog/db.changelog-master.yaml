@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/scripts/init-liquibase.yaml
+  - include:
+      file: db/changelog/scripts/init-data.yaml
+

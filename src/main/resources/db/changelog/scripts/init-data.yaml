@@ -1,0 +1,49 @@
+databaseChangeLog:
+- changeSet:
+    id: 1607831003505-1
+    author: Arieh Kellermann
+    changes:
+      - insert:
+          columns:
+            - column:
+                name: id
+                valueNumeric: 10000
+            - column:
+                name: password
+                value: $2y$12$KrP/jkwnR214yw0oIdO5Xu/7wP7usdJktXWD8OumfhZofGcwgDFku
+            - column:
+                name: role
+                value: ADMIN
+            - column:
+                name: username
+                value: admin
+          tableName: users
+- changeSet:
+    id: 1607831003505-2
+    author: Arieh Kellermann
+    changes:
+      - insert:
+          columns:
+            - column:
+                name: id
+                valueNumeric: 10000
+            - column:
+                name: name
+                value: Audiobook
+            - column:
+                name: removable
+                valueBoolean: false
+          tableName: tags
+- changeSet:
+    id: 1607831003505-3
+    author: Arieh Kellermann
+    changes:
+      - insert:
+          columns:
+            - column:
+                name: user_id
+                valueNumeric: 10000
+            - column:
+                name: tag_id
+                valueNumeric: 10000
+          tableName: user_tag

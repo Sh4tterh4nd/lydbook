@@ -1,0 +1,366 @@
+databaseChangeLog:
+- changeSet:
+    id: 1607830992310-1
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: authors_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: authors
+- changeSet:
+    id: 1607830992310-2
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: book_tag_pkey
+            name: book_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: book_tag_pkey
+            name: tag_id
+            type: BIGINT
+        tableName: book_tag
+- changeSet:
+    id: 1607830992310-3
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: books_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: data_name
+            type: VARCHAR(255)
+        - column:
+            name: length
+            type: BIGINT
+        - column:
+            name: title
+            type: VARCHAR(255)
+        - column:
+            name: author_id
+            type: BIGINT
+        tableName: books
+- changeSet:
+    id: 1607830992310-4
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_tag_pkey
+            name: user_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_tag_pkey
+            name: tag_id
+            type: BIGINT
+        tableName: user_tag
+- changeSet:
+    id: 1607830992310-5
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: users_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: password
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: role
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: username
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1607830992310-6
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: tags_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: removable
+            type: BOOLEAN
+        tableName: tags
+- changeSet:
+    id: 1607830992310-7
+    author: Arieh Kellermann
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: progress_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: progress
+            type: INTEGER
+        - column:
+            name: updatedtime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: book_id
+            type: BIGINT
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: progress
+- changeSet:
+    id: 1607830992310-8
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: author_id
+        baseTableName: books
+        constraintName: fkfjixh2vym2cvfj3ufxj91jem7
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: authors
+        validate: true
+- changeSet:
+    id: 1607830992310-9
+    author: Arieh Kellermann
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: uk_9mhkwvnfaarcalo4noabrin5j
+        tableName: authors
+- changeSet:
+    id: 1607830992310-10
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: book_id
+        baseTableName: progress
+        constraintName: fka9gupbhbe95240apjm1cafr1e
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: books
+        validate: true
+- changeSet:
+    id: 1607830992310-11
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: book_id
+        baseTableName: book_tag
+        constraintName: fkbacbwwmfdh1bwsdgs9pycw9rr
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: books
+        validate: true
+- changeSet:
+    id: 1607830992310-12
+    author: Arieh Kellermann
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: uk_r43af9ap4edm43mmtq01oddj6
+        tableName: users
+- changeSet:
+    id: 1607830992310-13
+    author: Arieh Kellermann
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: uk_t48xdq560gs3gap9g7jg36kgc
+        tableName: tags
+- changeSet:
+    id: 1607830992310-14
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: progress
+        constraintName: fk7fyumbty8qgbd7sfbbjnqdo62
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1607830992310-15
+    author: Arieh Kellermann
+    changes:
+    - addUniqueConstraint:
+        columnNames: user_id, book_id
+        constraintName: uko1w46rvgw0ed743upoicsh78e
+        tableName: progress
+- changeSet:
+    id: 1607830992310-16
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: tag_id
+        baseTableName: book_tag
+        constraintName: fk6h6a61im6dbd5759issu0jfd1
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: tags
+        validate: true
+- changeSet:
+    id: 1607830992310-17
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_tag
+        constraintName: fk30wgo8txt0c0v8nxnwmxmrce6
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1607830992310-18
+    author: Arieh Kellermann
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: tag_id
+        baseTableName: user_tag
+        constraintName: fkd4x1epa5r77ouvbahqth1vrgh
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: tags
+        validate: true
+- changeSet:
+    id: 1607830992310-19
+    author: Arieh Kellermann
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: author_sequence
+        startValue: 10000
+- changeSet:
+    id: 1607830992310-20
+    author: Arieh Kellermann
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: book_sequence
+        startValue: 10000
+- changeSet:
+    id: 1607830992310-21
+    author: Arieh Kellermann
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: progress_sequence
+        startValue: 10000
+- changeSet:
+    id: 1607830992310-22
+    author: Arieh Kellermann
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: tag_sequence
+        startValue: 10000
+- changeSet:
+    id: 1607830992310-23
+    author: Arieh Kellermann
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: user_sequence
+        startValue: 10001
+
