@@ -50,7 +50,6 @@
                 <h2 th:text="${book.getTitle()}">Book Title</h2>
                 <h4>Author: <a th:href="'/authors/'+${book.getAuthor().getId()}"
                                th:text="${book.getAuthor().getName()}"></a></h4>
-                <h4 th:text="'Duration: ' + ${book.getLength()}">Duration: 15min</h4>
                 <h4>Tags:</h4>
                 <div class="bs-component mb-4">
                     <th:block th:each="tag: ${book.getTags()}">

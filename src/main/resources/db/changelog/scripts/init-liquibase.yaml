@@ -54,9 +54,6 @@ databaseChangeLog:
             name: data_name
             type: VARCHAR(255)
         - column:
-            name: length
-            type: BIGINT
-        - column:
             name: title
             type: VARCHAR(255)
         - column:
@@ -305,7 +302,6 @@ databaseChangeLog:
     - createSequence:
         cacheSize: 1
         cycle: false
-        dataType: bigint
         incrementBy: 50
         maxValue: 9223372036854775807
         minValue: 1
@@ -318,7 +314,6 @@ databaseChangeLog:
     - createSequence:
         cacheSize: 1
         cycle: false
-        dataType: bigint
         incrementBy: 50
         maxValue: 9223372036854775807
         minValue: 1
@@ -331,7 +326,6 @@ databaseChangeLog:
     - createSequence:
         cacheSize: 1
         cycle: false
-        dataType: bigint
         incrementBy: 50
         maxValue: 9223372036854775807
         minValue: 1
@@ -344,7 +338,6 @@ databaseChangeLog:
     - createSequence:
         cacheSize: 1
         cycle: false
-        dataType: bigint
         incrementBy: 50
         maxValue: 9223372036854775807
         minValue: 1
@@ -357,7 +350,6 @@ databaseChangeLog:
     - createSequence:
         cacheSize: 1
         cycle: false
-        dataType: bigint
         incrementBy: 50
         maxValue: 9223372036854775807
         minValue: 1
