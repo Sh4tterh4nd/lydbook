@@ -175,7 +175,7 @@
             if ($('#edituserpasswordinput').val().length >0){
                 currentUser.password = $('#edituserpasswordinput').val();
             }
-
+            $('#submitEditUser').attr('disabled')
             $.ajax({
                 type: "PUT",
                 url: "/api/v1/user",
@@ -195,7 +195,7 @@
 
             submitData.username = data.get('username');
             submitData.password = data.get('password');
-
+            $('#submitNewUser').attr('disabled');
             $.ajax({
                 type: "POST",
                 url: "/api/v1/user",

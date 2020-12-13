@@ -138,4 +138,17 @@ public class AudiobookService {
         return bookList;
     }
 
+    public Book findAllowedBookByIdAndUsername(Long id,String username){
+        User user = userRepository.findUserByUsername(username);
+
+        for (Tag tag : user.getTags()) {
+            for (Book book : tag.getBooks()) {
+                if (book.getId().equals(id)){
+                    return book;
+                }
+            }
+        }
+        return null;
+    }
+
 }
