@@ -41,7 +41,6 @@ public class AudiobookService {
         Mp3File mp3file = new Mp3File(file);
         String authorName = "";
 
-        book.setLength(mp3file.getLengthInMilliseconds());
         book.setDataName(uuidName);
         if (mp3file.hasId3v2Tag()) {
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();
