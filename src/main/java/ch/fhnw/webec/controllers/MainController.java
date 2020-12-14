@@ -42,6 +42,16 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/current")
+    public String current(@AuthenticationPrincipal Principal principal) {
+        List<Progress> mostRecentProgress = progressService.getMostRecentProgressByUser(principal.getName());
+        if (mostRecentProgress.size() > 0) {
+            return "redirect:/book/" + mostRecentProgress.get(0).getBook().getId();
+        } else {
+            return "redirect:/index";
+        }
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";

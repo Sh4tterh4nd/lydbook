@@ -26,14 +26,14 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
     @Transactional
     public Tag findOrCreateFirstByName(String name, boolean isRemovable) {
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> criteriaQ = cBuild.createQuery(Tag.class);
+        CriteriaQuery<Tag> selectQuery = cBuild.createQuery(Tag.class);
 
-        Root<Tag> tag = criteriaQ.from(Tag.class);
+        Root<Tag> tag = selectQuery.from(Tag.class);
         Predicate namePredicate = cBuild.equal(tag.get("name"), name);
-        criteriaQ.where(namePredicate);
+        selectQuery.where(namePredicate);
 
         List<Tag> resultList = entityManager
-                .createQuery(criteriaQ)
+                .createQuery(selectQuery)
                 .setFirstResult(0)
                 .setMaxResults(1)
                 .getResultList();
@@ -50,16 +50,29 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
 
     @Override
     @Transactional
-    public void removeUnusedTags(){
+    public void removeTagsWithNoBooks() {
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Tag> criteriaQ = cBuild.createCriteriaDelete(Tag.class);
+        CriteriaDelete<Tag> deleteQuery = cBuild.createCriteriaDelete(Tag.class);
+
+        Root<Tag> tag = deleteQuery.from(Tag.class);
+        Predicate namePredicate = cBuild.isEmpty(tag.get("books"));
+
+        deleteQuery.where(namePredicate);
+        entityManager
+                .createQuery(deleteQuery)
+                .executeUpdate();
+    }
+
+    public List<Tag> findTagsWithNoBooks() {
+        CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQ = cBuild.createQuery(Tag.class);
 
         Root<Tag> tag = criteriaQ.from(Tag.class);
         Predicate namePredicate = cBuild.isEmpty(tag.get("books"));
 
         criteriaQ.where(namePredicate);
-        entityManager
+        return entityManager
                 .createQuery(criteriaQ)
-                .executeUpdate();
+                .getResultList();
     }
 }
