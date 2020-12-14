@@ -50,10 +50,10 @@ You can start. Good luck!
 
 ## Project delivery <to be filled by student>
 
-How to start the project: (if other than `./mvnw spring-boot:run -Dspring-boot.run.profiles=dev`)
+How to start the project: (if other than `./gradlew bootRun -Dspring-boot.run.profiles=dev`)
 default login: `name: admin, pw: admin`
 
-How to test the project:  (if other than `./mvnw verify`)
+How to test the project:  (if other than `./gradlew clean test`)
 
 Hand-written, static HTML
 project description:      (if other than `index.html` in project root directory)
