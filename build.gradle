@@ -15,7 +15,7 @@ repositories {
     mavenCentral()
 }
 group = 'ch.fhnw.webec'
-version = '0.0.1-SNAPSHOT'
+version = '0.6.1'
 description = 'Graded Exercise'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -40,7 +40,6 @@ dependencies {
 }
 
 
-
 test {
     useJUnitPlatform()
 }
@@ -52,10 +51,19 @@ jib {
     to {
         image = 'shatterhand/lydbook'
         tags = ['latest', version]
+        auth {
+            username = 'shatterhand'
+            password = ''
+        }
     }
-    container{
+    container {
         mainClass = 'ch.fhnw.webec.GradedExerciseApplication'
         creationTime = 'USE_CURRENT_TIMESTAMP'
         ports = ['8080']
+        environment = [POSTGRES_HOST    : '',
+                       DATABASE_PORT    : '5432',
+                       DATABASE_NAME    : 'audiobook',
+                       DATABASE_USER    : 'book',
+                       DATABASE_PASSWORD: '']
     }
 }
