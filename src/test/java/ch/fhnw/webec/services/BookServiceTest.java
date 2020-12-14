@@ -42,10 +42,7 @@ class BookServiceTest {
     @Test
     void addAudiobook() throws InvalidDataException, IOException, UnsupportedTagException {
         Book book = bookService.addAudiobook("abc-abc", resources.resolve("FREE The Jester (A Riyria Chronicles Tale).mp3"));
-
-        assertTrue(Files.exists(Paths.get("data", "abc-abc.jpeg")));
         assertNotNull(book.getId());
-
     }
 
     @Test
