@@ -1,7 +1,7 @@
 package ch.fhnw.webec.controllers.api;
 
 import ch.fhnw.webec.services.ProgressService;
-import ch.fhnw.webec.util.AudiobookUtil;
+import ch.fhnw.webec.util.BookUtil;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class ApiProgressController {
 
     @PostMapping("{bookId}/")
     public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, @AuthenticationPrincipal Principal principal) {
-        if (AudiobookUtil.isNumeric(body)) {
+        if (BookUtil.isNumeric(body)) {
             progressService.updateProgress(principal.getName(), bookId, (int) Double.parseDouble(body));
         }
         return "";

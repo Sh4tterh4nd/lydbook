@@ -11,15 +11,15 @@ import java.util.*;
  */
 @Service
 public class AuthorService {
-    private final AudiobookService audiobookService;
+    private final BookService bookService;
 
     /**
      * Instantiates a new Author service.
      *
-     * @param audiobookService the audiobook service
+     * @param bookService the audiobook service
      */
-    public AuthorService(AudiobookService audiobookService) {
-        this.audiobookService = audiobookService;
+    public AuthorService(BookService bookService) {
+        this.bookService = bookService;
     }
 
 
@@ -30,7 +30,7 @@ public class AuthorService {
      * @return the allowed authors by username
      */
     public List<Author> getAllowedAuthorsByUsername(String username) {
-        List<Book> books = audiobookService.getAllowedBooksByUsername(username);
+        List<Book> books = bookService.getAllowedBooksByUsername(username);
         Set<Author> authorSet = new HashSet<>();
         books.forEach(book -> authorSet.add(book.getAuthor()));
         List<Author> authorList = new ArrayList<>(authorSet);
@@ -46,7 +46,7 @@ public class AuthorService {
      * @return the allowed author by id and username
      */
     public Author getAllowedAuthorByIdAndUsername(Long authorId, String username) {
-        List<Book> allowedBooksByUsername = audiobookService.getAllowedBooksByUsername(username);
+        List<Book> allowedBooksByUsername = bookService.getAllowedBooksByUsername(username);
         Author author = null;
         for (Book book : allowedBooksByUsername) {
             if (book.getAuthor().getId().equals(authorId)) {
