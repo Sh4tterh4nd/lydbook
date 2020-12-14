@@ -79,7 +79,7 @@ public class ApiController {
     @PutMapping("{bookId}/")
     public ResponseEntity updateBook(@PathVariable("bookId") Long bookId, @RequestBody Book book) {
         if (book.getId().equals(bookId)) {
-            audiobookService.updateAudiobook(book);
+            audiobookService.updateAudiobookAndTags(book);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
