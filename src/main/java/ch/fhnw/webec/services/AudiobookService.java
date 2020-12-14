@@ -12,7 +12,6 @@ import com.mpatric.mp3agic.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class AudiobookService {
     }
 
     @Transactional
-    public void addAudiobook(String uuidName, Path file) throws InvalidDataException, UnsupportedTagException, IOException {
+    public Book addAudiobook(String uuidName, Path file) throws InvalidDataException, UnsupportedTagException, IOException {
         Book book = new Book();
         Mp3File mp3file = new Mp3File(file);
         String authorName = "";
@@ -72,7 +71,10 @@ public class AudiobookService {
         book.addTag(audiobookTag);
         book.setAuthor(a);
         bookRepository.save(book);
+
+
         log.info("Audiobook: {} by {} has been added.", book.getTitle(), book.getAuthor().getName());
+        return book;
     }
 
     public void updateAudiobookAndTags(Book updatedBook){
@@ -137,10 +139,11 @@ public class AudiobookService {
     @Transactional
     public void deleteAudiobook(Long id) {
         Book book = bookRepository.findBookById(id);
-        Path data = Paths.get("data", book.getDataName());
+        Path data = Paths.get("data", book.getDataName().concat(".mp3"));
 
         try {
             Files.deleteIfExists(data);
+            Files.deleteIfExists(Paths.get("data", book.getDataName().concat(".jpeg")));
         } catch (IOException e) {
             log.error("The file:{} corresponding to the Audiobook: {} couldn't be deleted.", book.getDataName(), book.getTitle());
         }
