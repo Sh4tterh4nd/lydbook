@@ -12,6 +12,7 @@ import com.mpatric.mp3agic.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -74,6 +75,11 @@ public class AudiobookService {
         log.info("Audiobook: {} by {} has been added.", book.getTitle(), book.getAuthor().getName());
     }
 
+    public void updateAudiobookAndTags(Book updatedBook){
+        updateAudiobook(updatedBook);
+        removeAllUnusedTags();
+    }
+
     @Transactional
     public void updateAudiobook(Book updatedBook) {
         Book oldBook = bookRepository.findBookById(updatedBook.getId());
@@ -107,8 +113,25 @@ public class AudiobookService {
             }
         }
         bookRepository.save(oldBook);
-        tagRepository.removeUnusedTags();
         log.info("Audiobook: {} has been updated.", oldBook.getTitle());
+    }
+
+    public void removeAllUnusedTags(){
+        List<Tag> tagsWithNoBooks = tagRepository.findTagsWithNoBooks();
+        List<User> allUsers = userRepository.findAllByOrderByUsernameAsc();
+        for (User user : allUsers) {
+            for (Tag tagWithNoBook : tagsWithNoBooks) {
+                user.getTags().remove(tagWithNoBook);
+            }
+        }
+
+        allUsers.forEach(user -> userRepository.save(user));
+
+
+        for (User user : userRepository.findAllByOrderByUsernameAsc()) {
+            System.out.println(user);
+        }
+        tagRepository.removeTagsWithNoBooks();
     }
 
     @Transactional
