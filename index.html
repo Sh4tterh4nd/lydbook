@@ -1,1 +1,51 @@
-My project description as static html ...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project description</title>
+</head>
+<body>
+<h1>LydBook</h1>
+<p>The name Lydbook is based on the Norwegian word for audiobook (Lydbok)</p>
+<p>In Lydbook the server owner (admin) can upload audiobooks and then listen to them.</p>
+<p>LydBook saves the book which one is currently listening to and displays that on the starting page, also the last few
+    books that were listen to are displayed there.</p>
+
+<p>The admin can add users and share audiobooks with these users. Lydbook will keep track of the listening progress for
+    each audiobook and user.</p>
+<h3>Sharing and Tags</h3>
+<p>The sharing mechanics is done through tags.</p>
+<p>Each audiobook that gets uploaded automatically gets tagged with the tag <b>Audiobook</b> aswell as a tag that
+    contains the <b>Author Name</b>, the admin has the option to add custom tags to the audiobook in the edit menu of
+    the book.</p>
+<p>In the users section the admin can decide which tags are shared with each user. By default every user gets access to
+    the tag <b>Audiobook</b></p>
+<p>Users will have access to all the books that are associated with tags that they have permission to.</p>
+
+<h3>The audioplayer supports following features:</h3>
+<ul>
+    <li>Automatically jump to the last listening possition.</li>
+    <li>Playback speed change between 0.5x and 3.5x</li>
+    <li>Play and Pause</li>
+    <li>Volume change between 0% and 100%</li>
+    <li>Jump forward 30 seconds</li>
+    <li>Jump back 30 seconds</li>
+</ul>
+
+<h3>Shortcomings</h3>
+<p>Unfortunately there are some technically shortcomings related to mp3 file encoding.</p>
+<p>If one wants to be able to skip around in an audiofile the backend must support partial byte range requests. Partial
+    byte range requests bring the benefit that the player can download only the part which is needed right now, else the
+    whole book would need to be downloaded each time which makes no sense.</p>
+<p>However, if an mp3 file is encoded with VBR (Variable bit rate), it is not possible anymore to calculate which bytes
+    of the file correspond to which time, because each frame can have a different bit rate. Thus if the first 5 minutes
+    are in 192K and we jump 5 minutes forward the player will make a request based on the 192K bit rate, however if
+    after the first 5 minutes the bit rate changes to 96K the jump forward would be not a 5 minutes jump but a 10 minute
+    jump. </p>
+<p>Because of that as of now LydBook only supports CBR (continuous bit rate) encoded mp3 files, because I haven't found
+    any good working java mp3 encoding libraries apart from some lame or ffmpeg wrappers, but these would complicate the
+    setup significantly.</p>
+<p>Also regarding to the encoding problem LydBook supports only audiobooks that are contained in a single mp3 file. I'll
+    probably use a lame wrapper or port it to java in the future.</p>
+</body>
+</html>
