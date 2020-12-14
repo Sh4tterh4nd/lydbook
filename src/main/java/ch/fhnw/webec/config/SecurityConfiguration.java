@@ -52,6 +52,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
             httpSecurity
                     .authorizeRequests()
                     .antMatchers("/css/**","/js/**").permitAll()
+                    .antMatchers("/favicon.ico").permitAll()
                     .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                     .antMatchers("/api/v1/progress/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.USER.name())
                     .antMatchers(HttpMethod.POST,"/api/v1/audiobook/**").hasRole(UserRole.ADMIN.name())
