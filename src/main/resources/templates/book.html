@@ -238,12 +238,14 @@
             })
 
         });
-        // Taginput
+
+        // Taginput EXTERNAL adapted an example https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
         let typaheadTags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: {
                 url: '/api/v1/tags',
+                //not external
                 filter: function (tags) {
                     return tags.filter((s) => s.removable).map((r) => ({name: r.name}));
                 },

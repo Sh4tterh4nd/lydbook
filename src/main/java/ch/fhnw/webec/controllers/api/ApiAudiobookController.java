@@ -26,13 +26,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/audiobook")
-public class ApiController {
+public class ApiAudiobookController {
     private final AudiobookService audiobookService;
     private final ProgressService progressService;
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
 
-    public ApiController(AudiobookService audiobookService, ProgressService progressService, AuthorRepository authorRepository, BookRepository bookRepository) {
+    public ApiAudiobookController(AudiobookService audiobookService, ProgressService progressService, AuthorRepository authorRepository, BookRepository bookRepository) {
         this.audiobookService = audiobookService;
         this.progressService = progressService;
         this.authorRepository = authorRepository;
@@ -40,7 +40,7 @@ public class ApiController {
     }
 
     @PostMapping
-    public void addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException, InvalidDataException, UnsupportedTagException {
+    public Book addAudiobook(@RequestParam("data") MultipartFile multipartFile) throws IOException, InvalidDataException, UnsupportedTagException {
         String uuidFileName = UUID.randomUUID().toString();
         String newFilename = uuidFileName.concat(AudiobookUtil.getFileEnding(multipartFile.getOriginalFilename()));
         Path upload = Paths.get("data");
@@ -53,7 +53,7 @@ public class ApiController {
         outputStream.flush();
         outputStream.close();
 
-        audiobookService.addAudiobook(uuidFileName, output);
+        return audiobookService.addAudiobook(uuidFileName, output);
     }
 
     @GetMapping(value = "{bookId}/stream")
