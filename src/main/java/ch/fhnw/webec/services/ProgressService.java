@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Progress service.
+ */
 @Service
 public class ProgressService {
     private final ProgressRepository progressRepository;
@@ -20,6 +23,13 @@ public class ProgressService {
     private final UserRepository userRepository;
     private Logger log = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Instantiates a new Progress service.
+     *
+     * @param progressService the progress service
+     * @param bookRepository  the book repository
+     * @param userRepository  the user repository
+     */
     public ProgressService(ProgressRepository progressService, BookRepository bookRepository, UserRepository userRepository) {
         this.progressRepository = progressService;
         this.bookRepository = bookRepository;
@@ -27,6 +37,13 @@ public class ProgressService {
     }
 
 
+    /**
+     * Update progress.
+     *
+     * @param username     the username
+     * @param bookId       the book id
+     * @param progressTime the progress time
+     */
     public void updateProgress(String username, Long bookId, Integer progressTime) {
         Book book = bookRepository.findBookById(bookId);
         User user = userRepository.findUserByUsername(username);
@@ -43,6 +60,12 @@ public class ProgressService {
         progressRepository.save(progress);
     }
 
+    /**
+     * Get all progresses ordered by newest from a certain answer
+     *
+     * @param username the username
+     * @return the list
+     */
     public List<Progress> getMostRecentProgressByUser(String username){
         User userByUsername = userRepository.findUserByUsername(username);
 

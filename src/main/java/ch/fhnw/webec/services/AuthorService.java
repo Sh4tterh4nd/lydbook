@@ -2,21 +2,33 @@ package ch.fhnw.webec.services;
 
 import ch.fhnw.webec.entity.Author;
 import ch.fhnw.webec.entity.Book;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Author service.
+ */
 @Service
 public class AuthorService {
     private final AudiobookService audiobookService;
 
+    /**
+     * Instantiates a new Author service.
+     *
+     * @param audiobookService the audiobook service
+     */
     public AuthorService(AudiobookService audiobookService) {
         this.audiobookService = audiobookService;
     }
 
 
+    /**
+     * Get all Authors that own books that a user has permission to
+     *
+     * @param username the username
+     * @return the allowed authors by username
+     */
     public List<Author> getAllowedAuthorsByUsername(String username) {
         List<Book> books = audiobookService.getAllowedBooksByUsername(username);
         Set<Author> authorSet = new HashSet<>();
@@ -26,6 +38,13 @@ public class AuthorService {
         return authorList;
     }
 
+    /**
+     * gets Author by id if the author owns any books which the user has permission to
+     *
+     * @param authorId the author id
+     * @param username the username
+     * @return the allowed author by id and username
+     */
     public Author getAllowedAuthorByIdAndUsername(Long authorId, String username) {
         List<Book> allowedBooksByUsername = audiobookService.getAllowedBooksByUsername(username);
         Author author = null;

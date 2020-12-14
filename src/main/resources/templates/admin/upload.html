@@ -27,12 +27,6 @@
                 </div>
             </div>
             <div class="form-group" id="uploadInput">
-                <div class="custom-control custom-switch">
-                    <input name="shareAll" type="checkbox" class="custom-control-input" id="newusershareAll"
-                    >
-                    <label class="custom-control-label" for="newusershareAll">Single Audiobook with varying album
-                        names.</label>
-                </div>
                 <form th:action="@{/api/v1/audiobook}" method="post" enctype="multipart/form-data"
                       class="input-group mb-3" id="uploadForm">
                     <div class="custom-file">
@@ -68,43 +62,47 @@
         $(document).ready(function () {
 
             $("#uploadBtn").click(function (event) {
-                let data = new FormData($('#uploadForm')[0]);
-                // disabled the submit button
-                $("#uploadInput").prop("hidden", true);
+                if ($('#inputGroupFile').val().length !== 0) {
 
-                //partly EXTERNAL (progressbar stuff)
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: "/api/v1/audiobook",
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 0,
-                    xhr: function () {
-                        let xhr = $.ajaxSettings.xhr();
-                        if (xhr.upload) {
-                            xhr.upload.addEventListener('progress', function (event) {
-                                let percent = 0;
-                                if (event.lengthComputable) {
-                                    percent = Math.ceil((event.loaded || event.position) / event.total * 100);
-                                }
-                                $("#uploadprogress").css("width", +percent + "%");
-                                if (percent === 100) {
-                                    $("#uploadprogress").text("Processing please wait...");
-                                } else {
-                                    $("#uploadprogress").text(percent + "%");
-                                }
-                            }, true);
-                        }
-                        return xhr;
-                    },
-                    success: function (data) {
-                        $("#uploadprogress").text("Finished");
-                        window.location.href = '/book/'+data.id;
-                    },
-                });
+
+                    let data = new FormData($('#uploadForm')[0]);
+                    // disabled the submit button
+                    $("#uploadInput").prop("hidden", true);
+
+                    //partly EXTERNAL (progressbar stuff)
+                    $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "/api/v1/audiobook",
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        timeout: 0,
+                        xhr: function () {
+                            let xhr = $.ajaxSettings.xhr();
+                            if (xhr.upload) {
+                                xhr.upload.addEventListener('progress', function (event) {
+                                    let percent = 0;
+                                    if (event.lengthComputable) {
+                                        percent = Math.ceil((event.loaded || event.position) / event.total * 100);
+                                    }
+                                    $("#uploadprogress").css("width", +percent + "%");
+                                    if (percent === 100) {
+                                        $("#uploadprogress").text("Processing please wait...");
+                                    } else {
+                                        $("#uploadprogress").text(percent + "%");
+                                    }
+                                }, true);
+                            }
+                            return xhr;
+                        },
+                        success: function (data) {
+                            $("#uploadprogress").text("Finished");
+                            window.location.href = '/book/' + data.id;
+                        },
+                    });
+                }
             });
         });
 
