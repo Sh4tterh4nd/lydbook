@@ -3,7 +3,7 @@
     {
       "name": "Unit- and Integrationtests",
       "setup": "",
-      "run": "./mvnw verify",
+      "run": "./gradlew clean test",
       "input": "",
       "output": "",
       "comparison": "included",
