@@ -1,4 +1,17 @@
 databaseChangeLog:
     - include:
         file: db/changelog/db.changelog-master.yaml
+    - changeSet:
+        id: add_test_data
+        author: Arieh Kellermann
+        changes:
+            - sqlFile:
+                path: db/changelog/scripts/insert_test_users.sql
+            - sqlFile:
+                  path: db/changelog/scripts/insert_test_tags.sql
+        rollback:
+        - delete:
+            tableName: users
+        - delete:
+            tableName: tags
 
