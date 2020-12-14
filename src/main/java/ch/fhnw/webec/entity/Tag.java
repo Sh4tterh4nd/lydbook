@@ -22,7 +22,7 @@ public class Tag {
     private boolean removable = true;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     private Set<Book> books;
 
     /**

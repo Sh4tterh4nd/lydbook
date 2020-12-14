@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 /**
  * Custom Book Repository
@@ -34,6 +35,7 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
      * @param id the book id
      */
     @Override
+    @Transactional
     public void deleteBookById(Long id) {
         deleteProgressForBookById(id);
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();

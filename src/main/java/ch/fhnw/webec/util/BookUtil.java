@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Audiobook util.
  */
-public class AudiobookUtil {
+public class BookUtil {
     //https://regex101.com/r/18u6or/3
     private static Pattern fileExtensionPattern = Pattern.compile("(?<extension>\\.[^\\.]*$)");
     private static Pattern stringNumericPattern = Pattern.compile("^(\\d+\\.*\\d*)|(\\d*\\.\\d+)$");

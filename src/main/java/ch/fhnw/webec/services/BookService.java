@@ -24,7 +24,7 @@ import java.util.*;
  * Audiobook service
  */
 @Service
-public class AudiobookService {
+public class BookService {
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final TagRepository tagRepository;
@@ -39,7 +39,7 @@ public class AudiobookService {
      * @param tagRepository    the tag repository
      * @param userRepository   the user repository
      */
-    public AudiobookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository) {
+    public BookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.tagRepository = tagRepository;
