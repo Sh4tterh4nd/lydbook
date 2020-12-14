@@ -50,7 +50,7 @@ You can start. Good luck!
 
 ## Project delivery <to be filled by student>
 
-How to start the project: (if other than `./mvnw spring-boot:run`)
+How to start the project: (if other than `./mvnw spring-boot:run -Dspring-boot.run.profiles=dev`)
 
 How to test the project:  (if other than `./mvnw verify`)
 
