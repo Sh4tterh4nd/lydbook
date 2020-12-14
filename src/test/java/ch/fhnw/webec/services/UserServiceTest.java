@@ -1,5 +1,6 @@
 package ch.fhnw.webec.services;
 
+import ch.fhnw.webec.dao.DAOPassword;
 import ch.fhnw.webec.entity.Tag;
 import ch.fhnw.webec.entity.User;
 import ch.fhnw.webec.repository.UserRepository;
@@ -21,8 +22,6 @@ class UserServiceTest {
 
     private final String USERNAME = "test_user";
     private final String USERNAME_PW = "test_user";
-    private final String USERNAME_PW_UPDATE = "test_user_up";
-    private final String TAG = "test";
 
     @Autowired
     private UserService userService;
@@ -45,18 +44,54 @@ class UserServiceTest {
 
     @Test
     void deleteUser() {
+        User test1 = userRepository.findUserByUsername("test1");
+        userService.deleteUser(test1.getId());
+        assertTrue(userRepository.findUserByUsername("test1") == null);
     }
 
     @Test
     void getUser() {
+        User user = userRepository.findUserByUsername("admin");
+        assertEquals(user.getUsername(), "admin");
+        assertTrue(passwordEncoder.matches("admin", user.getPassword()));
+        assertEquals(user.getId(), 10000L);
+    }
+
+    @Test
+    void getUserById() {
+        User user = userService.getUser(10000L);
+
+        assertEquals(user.getUsername(), "admin");
     }
 
     @Test
     void updateUser() {
+        User test6 = userRepository.findUserByUsername("test6");
+        test6.getTags();
+        test6.getTags().clear();
+        test6.setPassword("");
+        userService.updateUser(test6);
+        assertTrue(userRepository.findUserByUsername("test6").getTags().size() == 0);
     }
 
     @Test
     void updatePassword() {
+        DAOPassword daoPassword = new DAOPassword();
+        daoPassword.setCurrentPassword("test6");
+        daoPassword.setNewPassword("test6+");
 
+        userService.updatePassword("test6", daoPassword);
+        User test6 = userRepository.findUserByUsername("test6");
+        assertTrue(passwordEncoder.matches("test6+", test6.getPassword()));
+    }
+    @Test
+    void updatePasswordWithWrongOldPassword() {
+        DAOPassword daoPassword = new DAOPassword();
+        daoPassword.setCurrentPassword("test5--");
+        daoPassword.setNewPassword("test5+");
+
+        userService.updatePassword("test5", daoPassword);
+        User test5 = userRepository.findUserByUsername("test5");
+        assertTrue(passwordEncoder.matches("test5", test5.getPassword()));
     }
 }
