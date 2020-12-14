@@ -221,8 +221,8 @@
 
         })
 
-
-        var tags = new Bloodhound({
+       // EXTERNAL adapted an example https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
+        let tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: {
@@ -232,7 +232,7 @@
         });
         tags.initialize();
 
-        var elt = $('#tagsInput');
+        let elt = $('#tagsInput');
         elt.tagsinput({
             itemValue: 'id',
             itemText: 'name',

@@ -1,5 +1,7 @@
 package ch.fhnw.webec.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 @Entity
@@ -14,6 +16,7 @@ public class Author {
     private String name;
 
     @OneToMany(mappedBy = "author")
+    @JsonBackReference
     private List<Book> bookList;
 
     public String getName() {
