@@ -1,7 +1,6 @@
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10000,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10001,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10002,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10003,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10004,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10005,	10000);
-INSERT INTO "user_tag" ("user_id", "tag_id") VALUES (10006,	9952);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1001,	10000);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1002,	10000);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1003,	10000);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1004,	10000);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1005,	10000);
+INSERT INTO user_tag (user_id, tag_id) VALUES (1006,	9952);
