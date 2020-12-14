@@ -19,7 +19,7 @@ public class Author {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Book> bookList;
 
