@@ -21,8 +21,6 @@
 
             <a th:if="${!author.getBookList().isEmpty()}" th:href="'/authors/'+${author.getId()}" style="color: inherit">
                 <div class="bs-component">
-                    <!--                TODO-->
-                    <!--                <div class="card mb-3 border-primary"> BORDEER-->
                     <div class="card mb-3">
                         <img src="/authplaceholder.svg" alt="Author Img" style="max-width: 100%; height: auto">
                         <h4 class="card-header" th:text="${author.getName()}">Author Name</h4>
