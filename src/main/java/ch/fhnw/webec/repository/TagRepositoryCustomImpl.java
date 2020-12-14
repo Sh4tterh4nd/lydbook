@@ -8,20 +8,44 @@ import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Custom Tag Repository
+ */
 @Repository
 public class TagRepositoryCustomImpl implements TagRepositoryCustom {
 
     private final EntityManager entityManager;
 
+    /**
+     * Instantiates a new Tag repository custom.
+     *
+     * @param entityManager the entity manager
+     */
     public TagRepositoryCustomImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+
+    /**
+     * finds (or creates  if not already existing) tag by name
+     *
+     * @param name tagname
+     * @return tags
+     *
+     */
     @Override
     public Tag findOrCreateFirstByName(String name) {
         return findOrCreateFirstByName(name, true);
     }
 
+    /**
+     * finds (or creates with removable if not already existing) tag by name
+     *
+     * @param name tagname
+     * @param isRemovable if tag should be removable
+     * @return tags
+     *
+     */
     @Override
     @Transactional
     public Tag findOrCreateFirstByName(String name, boolean isRemovable) {
@@ -48,6 +72,11 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
         return newTag;
     }
 
+
+    /**
+     * remove all tags which are not associated with any book
+     *
+     */
     @Override
     @Transactional
     public void removeTagsWithNoBooks() {
@@ -63,6 +92,12 @@ public class TagRepositoryCustomImpl implements TagRepositoryCustom {
                 .executeUpdate();
     }
 
+    /**
+     * find all tags which are not associated with any book
+     *
+     * @return tags
+     *
+     */
     public List<Tag> findTagsWithNoBooks() {
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> criteriaQ = cBuild.createQuery(Tag.class);

@@ -10,14 +10,29 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ * Custom Author Repository
+ */
 @Repository
 public class AuthorRepositoryCustomImpl implements AuthorRepositoryCustom {
     private final EntityManager entityManager;
 
+    /**
+     * Instantiates a new Author repository custom.
+     *
+     * @param entityManager the entity manager
+     */
     public AuthorRepositoryCustomImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+
+    /**
+     * Finds (or create if author doesn't already exist) author by name
+     *
+     * @param name author name
+     * @return the Author
+     */
     @Override
     public Author findOrCreateAuthorByName(String name) {
         CriteriaBuilder cBuild = entityManager.getCriteriaBuilder();

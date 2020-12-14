@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 
+/**
+ * User service.
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -20,12 +22,24 @@ public class UserService {
     private final TagRepository tagRepository;
     private Logger log = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository  the user repository
+     * @param passwordEncoder the password encoder
+     * @param tagRepository   the tag repository
+     */
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TagRepository tagRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tagRepository = tagRepository;
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param user the user
+     */
     @Transactional
     public void createUser(User user) {
         user.setRole(UserRole.USER);
@@ -35,12 +49,23 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Delete user by id
+     *
+     * @param id the id
+     */
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteUserById(id);
         log.info("User with the id: {} has been deleted", id);
     }
 
+    /**
+     * Get user by id
+     *
+     * @param id the id
+     * @return the user
+     */
     public User getUser(Long id) {
         User user = userRepository.findUserById(id);
         user.setPassword("");
@@ -48,6 +73,11 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Update user
+     *
+     * @param updatedUser the updated user
+     */
     @Transactional
     public void updateUser(User updatedUser) {
         User user = userRepository.findUserById(updatedUser.getId());
@@ -60,6 +90,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Update password of certain user
+     *
+     * @param username the username
+     * @param password the password
+     * @return the boolean
+     */
     public boolean updatePassword(String username, DAOPassword password) {
         User user = userRepository.findUserByUsername(username);
         if (passwordEncoder.matches(password.getCurrentPassword(), user.getPassword())) {

@@ -34,7 +34,7 @@ public class BookController {
 
     @GetMapping("/book/{id}")
     public String getBook(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
-        Book book = audiobookService.findAllowedBookByIdAndUsername(id, principal.getName());
+        Book book = audiobookService.getAllowedBookByIdAndUsername(id, principal.getName());
         if (book ==null){
             return "redirect:/books/";
         }

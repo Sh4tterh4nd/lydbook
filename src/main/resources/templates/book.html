@@ -277,18 +277,21 @@
 
         audio.addEventListener("canplay", resumePlay)
 
+        //change playback speed
         playbackspeed.oninput = function () {
             audio.playbackRate = playbackspeed.value;
             $('#speedDisplay').html(playbackspeed.value);
         }
 
+        //change playback volume
         volumeSlider.oninput = function () {
             audio.volume = volumeSlider.value / 100;
         }
-
+        //update playback slider
         $('#playbackSlider')[0].oninput = function () {
             audio.currentTime = $('#playbackSlider')[0].value;
         }
+
 
         function pausePlay() {
             if (isPlaying(audio)) {
@@ -327,10 +330,12 @@
             }
         }
 
-        function updateSlider() {
+        //change time from changed slider
+        function changeTimeFromSlider() {
             audio.currentTime = $('#playbackSlider')[0].value;
         }
 
+        //update progress
         function updateCurrentTime() {
             let progress = audio.currentTime;
             $.ajax({
@@ -361,7 +366,7 @@
             }
         }
 
-        audio.addEventListener("oninput", updateSlider)
+        audio.addEventListener("oninput", changeTimeFromSlider)
     </script>
 </th:block>
 </body>
