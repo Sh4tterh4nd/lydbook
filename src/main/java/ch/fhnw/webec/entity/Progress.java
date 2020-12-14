@@ -18,7 +18,7 @@ public class Progress {
     @SequenceGenerator(name = "progress_seq_gen", sequenceName = "progress_sequence", initialValue = 10000)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
