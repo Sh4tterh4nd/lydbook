@@ -28,11 +28,14 @@
                     </svg>
                 </button>
                 <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown"
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-lg"
+                            data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"></button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a class="dropdown-item bg-primary" href="#" data-toggle="modal" data-target="#editBook">Edit</a>
-                        <a class="dropdown-item bg-danger" href="#" data-toggle="modal" data-target="#deleteBook">Delete</a>
+                        <a class="dropdown-item bg-primary" href="#" data-toggle="modal"
+                           data-target="#editBook">Edit</a>
+                        <a class="dropdown-item bg-danger" href="#" data-toggle="modal"
+                           data-target="#deleteBook">Delete</a>
                     </div>
                 </div>
             </div>
@@ -41,7 +44,8 @@
         <div class="col-lg-6">
             <div class="bs-component">
                 <div class="card mb-4">
-                        <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                    <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'"
+                         onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
                 </div>
             </div>
         </div>
@@ -70,6 +74,11 @@
 
     <!--    AudioPlayer-->
     <div class="alert alert-secondary ">
+        <div class="row">
+            <div class="col-lg-2" id="currentPlaytime">00:00</div>
+            <div class="col-lg-8"></div>
+            <div class="col-lg-2" style="text-align: right" id="totalPlaytime">00:00</div>
+        </div>
         <fieldset class="form-group">
             <input type="range" class="custom-range" id="playbackSlider" min="0" value="0" step="1">
         </fieldset>
@@ -110,7 +119,8 @@
             </div>
         </div>
     </div>
-    <div sec:authorize="hasRole('ADMIN')"  class="modal fade" id="deleteBook" tabindex="-1" role="dialog" aria-hidden="true">
+    <div sec:authorize="hasRole('ADMIN')" class="modal fade" id="deleteBook" tabindex="-1" role="dialog"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -330,9 +340,11 @@
             }
         }
 
-        //change time from changed slider
-        function changeTimeFromSlider() {
-            audio.currentTime = $('#playbackSlider')[0].value;
+        //updateSlider
+        function updateSlider() {
+            $('#currentPlaytime').text(getTimeHHMMSS(Math.ceil(audio.currentTime)))
+            $('#totalPlaytime').text(getTimeHHMMSS(Math.ceil(audio.duration)))
+            $('#playbackSlider').val(audio.currentTime);
         }
 
         //update progress
@@ -353,7 +365,9 @@
             let s = seconds % 60;
             let m = ((seconds - s) / 60) % 60;
             let h = (seconds - s - m * 60) / 3600;
-
+            if (h === 0) {
+                return format(m) + ":" + format(s);
+            }
 
             return format(h) + ":" + format(m) + ":" + format(s);
         }
@@ -366,7 +380,7 @@
             }
         }
 
-        audio.addEventListener("oninput", changeTimeFromSlider)
+        audio.addEventListener("timeupdate", updateSlider)
     </script>
 </th:block>
 </body>
