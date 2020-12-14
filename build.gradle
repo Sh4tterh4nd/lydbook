@@ -15,7 +15,7 @@ repositories {
     mavenCentral()
 }
 group = 'ch.fhnw.webec'
-version = '0.6.1'
+version = '0.6.2'
 description = 'Graded Exercise'
 sourceCompatibility = 11
 targetCompatibility = 11
