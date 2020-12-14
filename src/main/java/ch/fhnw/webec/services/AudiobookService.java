@@ -20,6 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Audiobook service
+ */
 @Service
 public class AudiobookService {
     private final AuthorRepository authorRepository;
@@ -28,6 +31,14 @@ public class AudiobookService {
     private final UserRepository userRepository;
     private Logger log = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Instantiates a new Audiobook service.
+     *
+     * @param authorRepository the author repository
+     * @param bookRepository   the book repository
+     * @param tagRepository    the tag repository
+     * @param userRepository   the user repository
+     */
     public AudiobookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
@@ -35,6 +46,16 @@ public class AudiobookService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Add new audiobook
+     *
+     * @param uuidName the uuid name
+     * @param file     the file
+     * @return the book
+     * @throws InvalidDataException    the invalid data exception
+     * @throws UnsupportedTagException the unsupported tag exception
+     * @throws IOException             the io exception
+     */
     @Transactional
     public Book addAudiobook(String uuidName, Path file) throws InvalidDataException, UnsupportedTagException, IOException {
         Book book = new Book();
@@ -77,11 +98,21 @@ public class AudiobookService {
         return book;
     }
 
+    /**
+     * Update audiobook and remove all unused tags afet it.
+     *
+     * @param updatedBook the updated book
+     */
     public void updateAudiobookAndTags(Book updatedBook){
         updateAudiobook(updatedBook);
         removeAllUnusedTags();
     }
 
+    /**
+     * Update audiobook.
+     *
+     * @param updatedBook the updated book
+     */
     @Transactional
     public void updateAudiobook(Book updatedBook) {
         Book oldBook = bookRepository.findBookById(updatedBook.getId());
@@ -118,6 +149,9 @@ public class AudiobookService {
         log.info("Audiobook: {} has been updated.", oldBook.getTitle());
     }
 
+    /**
+     * Remove all tags that are not owned by any audiobook anymore.
+     */
     public void removeAllUnusedTags(){
         List<Tag> tagsWithNoBooks = tagRepository.findTagsWithNoBooks();
         List<User> allUsers = userRepository.findAllByOrderByUsernameAsc();
@@ -136,6 +170,11 @@ public class AudiobookService {
         tagRepository.removeTagsWithNoBooks();
     }
 
+    /**
+     * Delete audiobook by id where
+     *
+     * @param id the id
+     */
     @Transactional
     public void deleteAudiobook(Long id) {
         Book book = bookRepository.findBookById(id);
@@ -151,6 +190,12 @@ public class AudiobookService {
         bookRepository.deleteBookById(id);
     }
 
+    /**
+     * Get all Audiobook's a user has access to.
+     *
+     * @param username the username
+     * @return the allowed books by username
+     */
     @Transactional
     public List<Book> getAllowedBooksByUsername(String username) {
         Set<Book> bookSet = new HashSet<>();
@@ -163,7 +208,14 @@ public class AudiobookService {
         return bookList;
     }
 
-    public Book findAllowedBookByIdAndUsername(Long id,String username){
+    /**
+     * get Audiobook if the user has permission to listen to it.
+     *
+     * @param id       the id
+     * @param username the username
+     * @return the book
+     */
+    public Book getAllowedBookByIdAndUsername(Long id, String username){
         User user = userRepository.findUserByUsername(username);
 
         for (Tag tag : user.getTags()) {
