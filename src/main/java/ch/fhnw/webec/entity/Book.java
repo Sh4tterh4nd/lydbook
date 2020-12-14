@@ -22,7 +22,7 @@ public class Book {
     private String dataName;
     private String title;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "book_tag",
             joinColumns = @JoinColumn(name = "book_id"),

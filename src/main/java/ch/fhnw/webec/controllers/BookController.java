@@ -7,7 +7,7 @@ import ch.fhnw.webec.repository.AuthorRepository;
 import ch.fhnw.webec.repository.BookRepository;
 import ch.fhnw.webec.repository.ProgressRepository;
 import ch.fhnw.webec.repository.UserRepository;
-import ch.fhnw.webec.services.AudiobookService;
+import ch.fhnw.webec.services.BookService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +22,19 @@ public class BookController {
     private final UserRepository userRepository;
     private final ProgressRepository progressRepository;
     private final AuthorRepository authorRepository;
-    private final AudiobookService audiobookService;
+    private final BookService bookService;
 
-    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository, AuthorRepository authorRepository, AudiobookService audiobookService) {
+    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository, AuthorRepository authorRepository, BookService bookService) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.progressRepository = progressRepository;
         this.authorRepository = authorRepository;
-        this.audiobookService = audiobookService;
+        this.bookService = bookService;
     }
 
     @GetMapping("/book/{id}")
     public String getBook(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
-        Book book = audiobookService.getAllowedBookByIdAndUsername(id, principal.getName());
+        Book book = bookService.getAllowedBookByIdAndUsername(id, principal.getName());
         if (book ==null){
             return "redirect:/books/";
         }
@@ -48,7 +48,7 @@ public class BookController {
 
     @GetMapping("/books/")
     public String getBooks(Model model, @AuthenticationPrincipal Principal principal) {
-        model.addAttribute("books", audiobookService.getAllowedBooksByUsername(principal.getName()));
+        model.addAttribute("books", bookService.getAllowedBooksByUsername(principal.getName()));
         return "books";
     }
 
