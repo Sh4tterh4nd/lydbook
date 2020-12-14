@@ -29,10 +29,43 @@
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#sharetags">Sharing Functionality</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#audioplayer">Audioplayer Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#howto">How To's</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#shortcomings">Shortcomings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#next">Whats Next?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#reflection">Reflection</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <div class="container">
+    <div class="col-lg-12">
+        <div class="bs-component">
+            <div class="alert  alert-warning">
+                <p class="mb-0">There is a small demo running on my server on<a href="https://webec.lonely-mountain.ch">https://webec.lonely-mountain.ch</a> <b>Username: admin Password: admin</b></p>
+            </div>
+    </div>
 
     <div class="col-lg-12">
         <h1>LydBook</h1>
@@ -44,7 +77,7 @@
         each audiobook and user.</p>
     </div>
 
-    <div class="col-lg-12">
+    <div id="sharetags" class="col-lg-12">
         <h3>Sharing and Tags</h3>
         <p>The sharing mechanics is done through tags.</p>
         <p>Each audiobook that gets uploaded automatically gets tagged with the tag <b>Audiobook</b> aswell as a tag that
@@ -56,7 +89,7 @@
 
     </div>
 
-    <div class="col-lg-12">
+    <div id="audioplayer" class="col-lg-12">
         <h3>The audioplayer supports following features:</h3>
         <ul>
             <li>Automatically jump to the last listening possition.</li>
@@ -70,7 +103,7 @@
 
 
 
-    <div class="col-lg-12">
+    <div id="howto" class="col-lg-12">
         <h3>How To's</h3>
         <h4>Add a book</h4>
         <p>Given you are logged in as admin. In the top right corner click on the <b>Account tab</b> and there on the <b>Upload Audiobook.</b> Now new page opens where you can select an mp3 file form your computer and upload it.
@@ -94,7 +127,7 @@
     </div>
 
 
-    <div class="col-lg-12">
+    <div id="shortcomings" class="col-lg-12">
         <h3>Shortcomings</h3>
         <p>Unfortunately there are some technically shortcomings related to mp3 file encoding.</p>
         <p>If one wants to be able to skip around in an audiofile the backend must support partial byte range requests. Partial
@@ -111,14 +144,15 @@
         <p>Also regarding to the encoding problem LydBook supports only audiobooks that are contained in a single mp3 file. I'll
             probably use a lame wrapper or port it to java in the future.</p>
     </div>
-    <div class="col-lg-12">
+    <div id="next" class="col-lg-12">
         <h3>Improvements / whats next</h3>
         <p>Im keeping track on my "roadmap" on a <a href="https://trello.com/b/QPXSkJJa/audiobookstream-backend">Trello Board</a> there one can see which features are planed next, and which are added already.</p>
-        <p>This whole HTML page is also available at <a href="lydbook.com">lydbook.com</a></p>
+        <p>This whole HTML page will  also available at <a href="http://lydbook.com">lydbook.com</a>, the domain registration is taking unusually long, so it might not be availably until the 15th or even 16th.</p>
+
     </div>
 
 
-    <div class="col-lg-12">
+    <div id="reflection" class="col-lg-12">
         <h3>Reflection</h3>
         <p>In the last one and a half year I have been creating several spring api's with a few minimalistic admin pages, because
             of that I was quiet optimistic on what I all could achive in that time, because well a lot of knowledge that I thought
@@ -127,7 +161,7 @@
         There were several sleepless nights, because I just kept tinkering around and forgot the clock.</p>
         <p>However, I have to say I don't regret anything, besides maybe for next time to give a bit more conservative goal, it was fun.</p>
     </div>
-
+    <div  class="col-lg-12" style="height: 800px"></div>
 </div>
 </body>
 </html>
