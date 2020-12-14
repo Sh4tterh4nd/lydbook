@@ -53,16 +53,66 @@ You can start. Good luck!
 How to start the project: (if other than `./gradlew bootRun -Dspring-boot.run.profiles=dev`)
 default login: `name: admin, pw: admin`
 
+Alternatively if docker is installed lydbook can also be pulled from docker hub and run that way.
+Or one can locally build a docker image `./gradlew jibDockerBuild`
+
+Example docker-compose.yml
+(This example is for a swarm stack so docker must be in swarm mode `docker swarm init`
+and then deploy with `docker stack deploy --compose-file docker-compose.yml lydbook`
+
+For common docker compose, the networking has to be modified a bit.
+)
+```yml
+version: '3.3'
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: audiobook
+      POSTGRES_PASSWORD: 234j5bfd
+      POSTGRES_USER: book
+    volumes:
+     - postgresData:/var/lib/postgresql/data
+    networks:
+     - network
+    logging:
+      driver: json-file
+  lydbook:
+    image: shatterhand/lydbook:latest
+    environment:
+      DATABASE_PASSWORD: 234j5bfd
+      POSTGRES_HOST: db
+    ports:
+     - 8887:8080
+    volumes:
+     - {local path to folder where books should be stored}:/data
+    networks:
+     - network
+    logging:
+      driver: json-file
+networks:
+  network:
+    driver: overlay
+volumes:
+  postgresData:
+    driver: local
+
+```
+
+I am also hosting currently a copy of the application on [https://webec.lonely-mountain.ch/](https://webec.lonely-mountain.ch/)
+
 How to test the project:  (if other than `./gradlew clean test`)
 
 Hand-written, static HTML
 project description:      (if other than `index.html` in project root directory)
 
-External contributions:
+External contributions: The progress bar part in the upload page and bootstrap-tags-input were done from examples
 
 Other comments:
 
-I'm particular proud of:
+I'm particular proud of: Im quiet pleased that I was able to implement all the functionality that I initially planed,
+even though time wise I went wide out of scope. But I don't regret that. The part I am proud of has nothing really to do with any part of the feature set,
+but that I was also able, to in the final hours, build a docker image and deploy it to my cluster.
 
 
 ## Project grading
