@@ -11,7 +11,10 @@ databaseChangeLog:
                   path: db/changelog/scripts/insert_test_tags.sql
             - sqlFile:
                   path: db/changelog/scripts/insert_test_user_tag.sql
-
+            - sqlFile:
+                  path: db/changelog/scripts/insert_test_authors.sql
+            - sqlFile:
+                  path: db/changelog/scripts/insert_test_books.sql
         rollback:
         - delete:
             tableName: users
