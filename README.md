@@ -1,67 +1,25 @@
-# WebEngineering Module, Graded Exercise
+# LydBook
 
-## Commit Proposal
+Lydbook is a self hosted Audiobook server.
 
-Matriculation Number: 970732
+Features:
 
-Project idea short description:
+- Save listening progress
+- Share audiobooks with other selected users
 
-*In short:*
+**Right now only CBR encoded mp3 files are supported.**
 
-A website that an "admin" can upload audiofiles (audiobooks) and share specific ones with specific "users". Users can log in and can listen to the audiofiles that were shared with them, the server saves the listening progress, and resumes from the last saved point when switching devices or reopening the webbrowser.
+To convert mp3 files with ffmpeg and not loose metadata or cover the following command can be used:
 
-**More detailed & idea**
+`ffmpeg -i input.mp3 -c:v copy -codec:a libmp3lame -b:a 64k -map_metadata 0 -map_metadata 0:s:0 -id3v2_version 3 output.mp3`
 
-*why*
+The easiest way to deploy Lydbook is with docker, below is a docker-compose example.
 
-I have an extensive library (200+) of audiobooks. Many of those I have bought from "audible" and many more on CD / digitalized on mp3.
+Optional configurations:
+`DATABASE_PORT` default `5432`
+`DATABASE_NAME` default `audiobook`
+`DATABASE_USER` default `book`
 
-Audible synchronizes the progress of each audiobook over every device, this isn't possible with the physically owned ones and there is no real solution out there that allows that. (There is booksonic & plex but both don't save the progress across devices.) In fact there are really not many great solutions to save the current progress even on the local device.
-Further I would love to be able to share my audiobooks that I have in audible with my family, which isn't possible, except with account sharing, which brings the problem that I can't listen to the same audiobook as my sister. In essence one can only listen to audiobooks that are already finished, if you don't want to screw up the listening progress.
-
-*detailed*
-
-I want an application where I as an administrator can:
-
-- upload audiobooks
-- select users to which share certain audiobooks or authors.
-
-A user upon login:
-
-- sees the most recent audiobook they listened to.
-- can browse authors and their books.
-- if clicking on an audiobook, the book continues to play from the last saved progress point for that specific user.
-
-
-
-I certainly have many more ideas to add to that project such as a metadata crawler over the audible api, to automatically group book series etc. but that would be wide out of scope for that exercise.
-
-
-## Project confirmation
-
-This is a phantastic idea, in particular because it solves a real problem. You should start with a minimal feature set. If there is time left in the end, you can always add new features later.
-
-I hope uploading and playing the audio is not too complicated. Even though your application is kind of pointless without it, I think you can skip this functionality for the exercise, if it burns too much time. Sounds like you plan to continue with this project after the exercise anyway.
-
-You can start. Good luck!
-
-(The communication and documentation can also be in German, if you prefer.)
-
-
-## Project delivery <to be filled by student>
-
-How to start the project: (if other than `./gradlew bootRun -Dspring-boot.run.profiles=dev`)
-default login: `name: admin, pw: admin`
-
-Alternatively if docker is installed lydbook can also be pulled from docker hub and run that way.
-Or one can locally build a docker image `./gradlew jibDockerBuild`
-
-Example docker-compose.yml
-(This example is for a swarm stack so docker must be in swarm mode `docker swarm init`
-and then deploy with `docker stack deploy --compose-file docker-compose.yml lydbook`
-
-For common docker compose, the networking has to be modified a bit.
-)
 ```yml
 version: '3.3'
 services:
@@ -69,52 +27,29 @@ services:
     image: postgres:12
     environment:
       POSTGRES_DB: audiobook
-      POSTGRES_PASSWORD: 234j5bfd
+      POSTGRES_PASSWORD: password
       POSTGRES_USER: book
     volumes:
      - postgresData:/var/lib/postgresql/data
     networks:
      - network
-    logging:
-      driver: json-file
   lydbook:
     image: shatterhand/lydbook:latest
     environment:
-      DATABASE_PASSWORD: 234j5bfd
+      DATABASE_PASSWORD: password
       POSTGRES_HOST: db
     ports:
-     - 8887:8080
+     - 8080:8080
     volumes:
-     - {local path to folder where books should be stored}:/data
+     - bookData:/data
     networks:
      - network
-    logging:
-      driver: json-file
 networks:
   network:
-    driver: overlay
 volumes:
   postgresData:
     driver: local
+  bookData:
+    driver: local
 
 ```
-
-I am also hosting currently a copy of the application on [https://webec.lonely-mountain.ch/](https://webec.lonely-mountain.ch/)
-
-How to test the project:  (if other than `./gradlew clean test`)
-
-Hand-written, static HTML
-project description:      (if other than `index.html` in project root directory)
-
-External contributions: The progress bar part in the upload page and bootstrap-tags-input were done from examples
-
-Other comments:
-
-I'm particular proud of: Im quiet pleased that I was able to implement all the functionality that I initially planed,
-even though time wise I went wide out of scope. But I don't regret that. The part I am proud of has nothing really to do with any part of the feature set,
-but that I was also able, to in the final hours, build a docker image and deploy it to my cluster.
-
-
-## Project grading
-
-< to be filled by lecturer>
