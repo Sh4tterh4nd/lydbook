@@ -1,4 +1,4 @@
-    name: GitHub Classroom Workflow
+    name: Github CI
 
     on: [push]
 
@@ -12,4 +12,5 @@
             uses: actions/setup-java@v1
             with:
               java-version: 11
-          - run:  ./gradlew clean test
+          - name: Run unit tests
+            run:  ./gradlew clean test
