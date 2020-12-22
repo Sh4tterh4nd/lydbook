@@ -34,6 +34,7 @@ public class Book {
     private Set<Tag> tags = new HashSet<>();
 
     @CreationTimestamp
+    @Column(name = "upload_date")
     private Date uploadDate;
 
     /**
