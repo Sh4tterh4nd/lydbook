@@ -3,4 +3,6 @@ databaseChangeLog:
       file: db/changelog/scripts/init-liquibase.yaml
   - include:
       file: db/changelog/scripts/init-data.yaml
+  - include:
+      file: db/changelog/scripts/lydbook-changeset-0.7.0.yaml
 
