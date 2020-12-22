@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1608605368345-1
+      author: Arieh Kellermann
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: upload_date
+                  type: timestamp
+            tableName: books
+  - changeSet:
+      id: 1608605368345-2
+      author: Arieh Kellermann
+      changes:
+        - sql:
+            sql: update books set upload_date = CURRENT_TIMESTAMP;
