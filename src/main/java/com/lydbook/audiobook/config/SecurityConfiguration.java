@@ -47,6 +47,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
     public static class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity httpSecurity) throws Exception {
+            httpSecurity.sessionManagement().maximumSessions(10);
             httpSecurity
                     .authorizeRequests()
                     .antMatchers("/css/**","/js/**").permitAll()

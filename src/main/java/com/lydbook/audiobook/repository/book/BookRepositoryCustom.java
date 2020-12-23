@@ -1,4 +1,4 @@
-package com.lydbook.audiobook.repository;
+package com.lydbook.audiobook.repository.book;
 
 import javax.transaction.Transactional;
 

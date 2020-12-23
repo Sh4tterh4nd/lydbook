@@ -3,8 +3,9 @@ package com.lydbook.audiobook.controllers;
 import com.lydbook.audiobook.entity.Book;
 import com.lydbook.audiobook.entity.Progress;
 import com.lydbook.audiobook.entity.User;
-import com.lydbook.audiobook.repository.AuthorRepository;
-import com.lydbook.audiobook.repository.BookRepository;
+import com.lydbook.audiobook.repository.series.SeriesRepository;
+import com.lydbook.audiobook.repository.author.AuthorRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
 import com.lydbook.audiobook.repository.ProgressRepository;
 import com.lydbook.audiobook.repository.UserRepository;
 import com.lydbook.audiobook.services.BookService;
@@ -23,13 +24,15 @@ public class BookController {
     private final ProgressRepository progressRepository;
     private final AuthorRepository authorRepository;
     private final BookService bookService;
+    private final SeriesRepository seriesRepository;
 
-    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository, AuthorRepository authorRepository, BookService bookService) {
+    public BookController(BookRepository bookRepository, UserRepository userRepository, ProgressRepository progressRepository, AuthorRepository authorRepository, BookService bookService, SeriesRepository seriesRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.progressRepository = progressRepository;
         this.authorRepository = authorRepository;
         this.bookService = bookService;
+        this.seriesRepository = seriesRepository;
     }
 
     @GetMapping("/book/{id}")
@@ -43,6 +46,7 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("progress", progress);
         model.addAttribute("authors", authorRepository.findAllByOrderByNameAsc());
+        model.addAttribute("seriesList", seriesRepository.findAllByOrderByName());
         return "book";
     }
 

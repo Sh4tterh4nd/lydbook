@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'com.google.cloud.tools.jib' version '2.4.0'
+    id 'com.google.cloud.tools.jib' version '2.7.0'
     id 'com.adarshr.test-logger' version '2.1.1'
     id 'org.liquibase.gradle' version "2.0.3"
 
@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 group = 'com.lydbook.audiobook'
-version = '0.7.0'
+version = '0.7.1'
 description = 'Lydbook'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -32,7 +32,6 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.2.16'
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.mpatric:mp3agic:0.9.1'
-
 
 
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -74,9 +73,7 @@ liquibase {
             username 'book'
             password 'password'
             referenceDriver 'liquibase.ext.hibernate.database.connection.HibernateDriver'
-            referenceUrl 'hibernate:spring:com.lydbook.audiobook?dialect=org.hibernate.dialect.Oracle10gDialect'
-//            diffChangeLogFile 'src/main/resources/db/changelog/changelogs2.yaml'
-//            diffChangeLogFile 'src/main/resources/db/changelog/liquibase-diff-changeLog.yaml'
+            referenceUrl 'hibernate:spring:com.lydbook.audiobook?dialect=org.hibernate.dialect.PostgreSQL10Dialect'
         }
     }
 }
@@ -95,13 +92,15 @@ jib {
         }
     }
     container {
-        mainClass = 'ch.fhnw.webec.GradedExerciseApplication'
+        mainClass = 'com.lydbook.audiobook.LydbookApplication'
         creationTime = 'USE_CURRENT_TIMESTAMP'
         ports = ['8080']
         environment = [POSTGRES_HOST    : '',
                        DATABASE_PORT    : '5432',
                        DATABASE_NAME    : 'audiobook',
                        DATABASE_USER    : 'book',
-                       DATABASE_PASSWORD: '']
+                       DATABASE_PASSWORD: '',
+
+                       LOGGING_LEVEL    : 'ERROR']
     }
 }

@@ -54,6 +54,9 @@
                 <h2 th:text="${book.getTitle()}">Book Title</h2>
                 <h4>Author: <a th:href="'/authors/'+${book.getAuthor().getId()}"
                                th:text="${book.getAuthor().getName()}"></a></h4>
+                <th:block th:if="${book.getTitle()!= null}">
+                   <h4>Series: <a th:href="''" th:text="${book.getSeries().getName()}"></a>, <span th:text="'Book ' +${book.getBookNumber()}"></span></h4>
+                </th:block>
                 <h4>Tags:</h4>
                 <div class="bs-component mb-4">
                     <th:block th:each="tag: ${book.getTags()}">
@@ -66,7 +69,6 @@
     </div>
 
     <div class="col-lg-12">
-        <!--        <audio id="audiobook" controls="" style="width: 100%">-->
         <audio id="audiobook">
             <source th:src="'/api/v1/audiobook/'+${book.getId()}+'/stream'">
         </audio>
@@ -161,13 +163,31 @@
                             <!--                            Author-->
                             <dl class="col-sm-3">Author:</dl>
                             <dd class="col-sm-9">
-                                <input name="author" type="text" list="auths" class="form-control"
+                                <input name="author" type="text" list="authorList" class="form-control"
                                        th:value="${book.getAuthor().getName()}"/>
-                                <datalist id="auths">
+                                <datalist id="authorList">
                                     <th:block th:each="author: ${authors}">
                                         <option th:text="${author.getName()}"></option>
                                     </th:block>
                                 </datalist>
+                            </dd>
+                            <!--Series -->
+                            <dl class="col-sm-3">Series:</dl>
+                            <dd class="col-sm-9">
+                                <input id="seriesInput" name="series" type="text" list="seriesList" class="form-control"
+                                       th:value="${book.getSeries() == null}? '': ${book.getSeries().getName()}"
+                                       placeholder="None"/>
+                                <datalist id="seriesList">
+                                    <th:block th:each="series: ${seriesList}">
+                                        <option th:text="${series.getName()}"></option>
+                                    </th:block>
+                                </datalist>
+                            </dd>
+
+                            <dl class="col-sm-3 booknumberinp">Number in Series:</dl>
+                            <dd class="col-sm-9 booknumberinp">
+                                <input name="bookNumber" type="number" class="form-control" min="0"
+                                       th:value="${book.getBookNumber()}"/>
                             </dd>
 
                             <!--                        Non deletable tags-->
@@ -192,8 +212,6 @@
                                 </select>
                             </dd>
                         </dl>
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button id="submitEdit" type="button" class="btn btn btn-info">Update</button>
@@ -205,6 +223,21 @@
     </div>
 
     <script th:inline="javascript">
+        $(document).ready(function () {
+            if (!$('#seriesInput').val()) {
+                $('.booknumberinp').attr("hidden", true);
+            }
+        });
+        $('#seriesInput').on('input', function (event) {
+            console.log("asd")
+            if ($(this).val()) {
+                $('.booknumberinp').attr("hidden", false);
+                console.log("abc")
+            } else {
+                $('.booknumberinp').attr("hidden", true);
+            }
+        })
+
         let bookID = /*<![CDATA[*/ [[${book.getId()}]]; /*]]>*/
 
         //Delte Book
@@ -229,10 +262,14 @@
 
             let book = new Object();
             let author = new Object();
+            let series = new Object();
+            series.name = data.get("series")
             author.name = data.get("author");
             book.id = bookID;
             book.title = data.get("title");
             book.author = author;
+            book.series = series;
+            book.bookNumber = data.get("bookNumber");
             book.tags = tags;
 
             $.ajax({

@@ -22,7 +22,9 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @Column(name = "data_name")
     private String dataName;
+
     private String title;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -36,6 +38,13 @@ public class Book {
     @CreationTimestamp
     @Column(name = "upload_date")
     private Date uploadDate;
+
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    private Series series;
+
+    @Column(name = "book_number")
+    private double bookNumber;
 
     /**
      * Gets author.
@@ -127,6 +136,22 @@ public class Book {
         if (!this.tags.contains(tag)) {
             this.tags.add(tag);
         }
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
+    }
+
+    public double getBookNumber() {
+        return bookNumber;
+    }
+
+    public void setBookNumber(double bookNumber) {
+        this.bookNumber = bookNumber;
     }
 
     /**

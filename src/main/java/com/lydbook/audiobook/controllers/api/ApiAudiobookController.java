@@ -1,8 +1,8 @@
 package com.lydbook.audiobook.controllers.api;
 
 import com.lydbook.audiobook.entity.Book;
-import com.lydbook.audiobook.repository.AuthorRepository;
-import com.lydbook.audiobook.repository.BookRepository;
+import com.lydbook.audiobook.repository.author.AuthorRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
 import com.lydbook.audiobook.services.BookService;
 import com.lydbook.audiobook.services.ProgressService;
 import com.lydbook.audiobook.util.BookUtil;

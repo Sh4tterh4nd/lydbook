@@ -2,8 +2,8 @@ package com.lydbook.audiobook.services;
 
 import com.lydbook.audiobook.entity.Book;
 import com.lydbook.audiobook.entity.Tag;
-import com.lydbook.audiobook.repository.BookRepository;
-import com.lydbook.audiobook.repository.TagRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
+import com.lydbook.audiobook.repository.tag.TagRepository;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.junit.jupiter.api.Test;
