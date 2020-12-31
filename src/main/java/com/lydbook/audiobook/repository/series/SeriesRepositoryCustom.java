@@ -10,10 +10,12 @@ public interface SeriesRepositoryCustom {
     @Transactional
     void removeAllUnusedSeries();
 
-    List<Series> findAllSeriesByAuthor(Author author);
+    List<Series> findAllSeries();
 
     List<Series> findAllSeriesByAuthor(Long authorId);
 
     @Transactional
     Series findOrCreateSeries(String seriesName);
+
+    Series findSeriesById(Long seriesId);
 }

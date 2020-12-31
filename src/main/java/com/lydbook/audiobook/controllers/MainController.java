@@ -41,6 +41,7 @@ public class MainController {
         } else {
             model.addAttribute("progresses", null);
         }
+        seriesRepository.findAllSeries();
         return "index";
     }
 
@@ -56,7 +57,6 @@ public class MainController {
 
     @GetMapping("/login")
     public String login() {
-        seriesRepository.findAllSeriesByAuthor(1L);
         return "login";
     }
 

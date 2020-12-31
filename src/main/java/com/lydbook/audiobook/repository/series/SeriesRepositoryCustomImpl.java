@@ -1,21 +1,34 @@
 package com.lydbook.audiobook.repository.series;
 
+import com.lydbook.audiobook.config.IAuthenticationFacade;
 import com.lydbook.audiobook.entity.Author;
+import com.lydbook.audiobook.entity.Book;
 import com.lydbook.audiobook.entity.Series;
-import com.lydbook.audiobook.entity.Tag;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+
 @Repository
-public class SeriesRepositoryCustomImpl  implements SeriesRepositoryCustom {
+public class SeriesRepositoryCustomImpl implements SeriesRepositoryCustom {
     private final EntityManager entityManager;
 
-    public SeriesRepositoryCustomImpl(EntityManager entityManager) {
+    private final IAuthenticationFacade authenticationFacade;
+
+    public SeriesRepositoryCustomImpl(EntityManager entityManager, IAuthenticationFacade authenticationFacade) {
         this.entityManager = entityManager;
+        this.authenticationFacade = authenticationFacade;
     }
+
+    private String getLoggedinUser() {
+        return authenticationFacade.getAuthentication().getName();
+    }
+
 
     @Override
     @Transactional
@@ -33,14 +46,43 @@ public class SeriesRepositoryCustomImpl  implements SeriesRepositoryCustom {
     }
 
     @Override
-    public List<Series> findAllSeriesByAuthor(Author author) {
-        return null;
+    public List<Series> findAllSeries() {
+        TypedQuery<Series> q = entityManager.createQuery("select distinct series from User user " +
+                "join user.tags tags " +
+                "join tags.books book " +
+                "join book.series series " +
+                "where user.username= :username", Series.class);
+        q.setParameter("username", getLoggedinUser());
+        List<Series> resultQuery = q.getResultList();
+        if (resultQuery.isEmpty()) return resultQuery;
+
+        List<Series> resultList = new ArrayList<>();
+        for (Series series : resultQuery) {
+            resultList.add(findSeriesById(series.getId()));
+        }
+        return resultList;
     }
+
 
     @Override
     public List<Series> findAllSeriesByAuthor(Long authorId) {
-        return null;
+        TypedQuery<Series> q = entityManager.createQuery("select distinct series from User user " +
+                "join user.tags tags " +
+                "join tags.books book " +
+                "join book.series series " +
+                "where user.username= :username and book.author.id = :authroId", Series.class);
+        q.setParameter("username", getLoggedinUser());
+        q.setParameter("authroId", authorId);
+
+
+        List<Series> resultList = new ArrayList<>();
+        for (Series series : q.getResultList()) {
+            resultList.add(findSeriesById(series.getId()));
+        }
+
+        return resultList;
     }
+
 
     @Override
     @Transactional
@@ -65,5 +107,40 @@ public class SeriesRepositoryCustomImpl  implements SeriesRepositoryCustom {
         entityManager.persist(newSeries);
 
         return newSeries;
+    }
+
+    @Override
+    public Series findSeriesById(Long seriesId) {
+        TypedQuery<Series> q = entityManager.createQuery("select series from User user " +
+                "join user.tags tags " +
+                "join tags.books book " +
+                "join book.series series " +
+                "where user.username= :username and series.id = :seriesId", Series.class);
+
+        q.setParameter("username", getLoggedinUser());
+        q.setParameter("seriesId", seriesId);
+        q.setMaxResults(1);
+        List<Series> resultList = q.getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        Series series = resultList.get(0);
+        series.setBooks(findBooksForSeries(seriesId));
+
+
+        return series;
+    }
+
+    public List<Book> findBooksForSeries(Long seriesId) {
+        TypedQuery<Book> q = entityManager.createQuery("select book from User user " +
+                "join user.tags tags " +
+                "join tags.books book " +
+                "join book.series series " +
+                "where user.username= :username and series.id = :seriesId", Book.class);
+
+        q.setParameter("username", getLoggedinUser());
+        q.setParameter("seriesId", seriesId);
+
+        return q.getResultList();
     }
 }
