@@ -19,14 +19,14 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/")
-    public String authors(Model model, @AuthenticationPrincipal Principal principal) {
-        model.addAttribute("authors", authorService.getAllowedAuthorsByUsername(principal.getName()));
+    public String authors(Model model) {
+        model.addAttribute("authors", authorService.getAllowedAuthorsByUsername());
         return "authors";
     }
 
     @GetMapping("/authors/{id}")
-    public String author(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
-        Author author = authorService.getAllowedAuthorByIdAndUsername(id, principal.getName());
+    public String author(Model model, @PathVariable("id") Long id) {
+        Author author = authorService.getAllowedAuthorByIdAndUsername(id);
         if (author == null){
             return "redirect:/authors/";
         }

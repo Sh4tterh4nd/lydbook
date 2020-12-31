@@ -2,6 +2,7 @@ package com.lydbook.audiobook.controllers;
 
 import com.lydbook.audiobook.dao.DAOPassword;
 import com.lydbook.audiobook.entity.Progress;
+import com.lydbook.audiobook.repository.series.SeriesRepository;
 import com.lydbook.audiobook.services.ProgressService;
 import com.lydbook.audiobook.services.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,10 +20,12 @@ public class MainController {
 
     private final ProgressService progressService;
     private final UserService userService;
+    private final SeriesRepository seriesRepository;
 
-    public MainController(ProgressService progressService, UserService userService) {
+    public MainController(ProgressService progressService, UserService userService, SeriesRepository seriesRepository) {
         this.progressService = progressService;
         this.userService = userService;
+        this.seriesRepository = seriesRepository;
     }
 
     @GetMapping({"/", "/index"})
@@ -53,6 +56,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String login() {
+        seriesRepository.findAllSeriesByAuthor(1L);
         return "login";
     }
 

@@ -57,8 +57,8 @@ public class ApiAudiobookController {
     }
 
     @GetMapping(value = "{bookId}/stream")
-    public ResponseEntity<FileSystemResource> streamFile(@PathVariable("bookId") Long bookId, @AuthenticationPrincipal Principal principal) {
-        Book book = bookService.getAllowedBookByIdAndUsername(bookId, principal.getName());
+    public ResponseEntity<FileSystemResource> streamFile(@PathVariable("bookId") Long bookId) {
+        Book book = bookRepository.findAllowedBookById(bookId);
         if (book == null) return ResponseEntity.notFound().build();
 
         Path bookPath = Paths.get("data", book.getDataName().concat(".mp3"));
@@ -67,8 +67,8 @@ public class ApiAudiobookController {
 
     @GetMapping(value = "{bookId}/cover", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
-    byte[] getCover(@PathVariable("bookId") Long bookId, @AuthenticationPrincipal Principal principal) throws IOException {
-        Book book = bookService.getAllowedBookByIdAndUsername(bookId, principal.getName());
+    byte[] getCover(@PathVariable("bookId") Long bookId) throws IOException {
+        Book book = bookRepository.findAllowedBookById(bookId);
         if (book == null) {
             return new byte[0];
         }

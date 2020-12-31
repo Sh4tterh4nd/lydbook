@@ -46,4 +46,13 @@ public class Series {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Series{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", books=" + books +
+                '}';
+    }
 }

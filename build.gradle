@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 group = 'com.lydbook.audiobook'
-version = '0.7.1'
+version = '0.7.4'
 description = 'Lydbook'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -88,7 +88,7 @@ jib {
         tags = ['latest', version]
         auth {
             username = 'shatterhand'
-            password = ''
+            password = "${System.env.JIB_PASSWORD}"
         }
     }
     container {

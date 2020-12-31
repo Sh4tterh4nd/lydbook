@@ -201,43 +201,4 @@ public class BookService {
 
         bookRepository.deleteBookById(id);
     }
-
-    /**
-     * Get all Audiobook's a user has access to.
-     *
-     * @param username the username
-     * @return the allowed books by username
-     */
-    @Transactional
-    public List<Book> getAllowedBooksByUsername(String username) {
-        Set<Book> bookSet = new HashSet<>();
-        User user = userRepository.findUserByUsername(username);
-        for (Tag tag : user.getTags()) {
-            tag.getBooks().forEach(book -> bookSet.add(book));
-        }
-        List<Book> bookList = new ArrayList<>(bookSet);
-        bookList.sort(Comparator.comparing(Book::getTitle));
-        return bookList;
-    }
-
-    /**
-     * get Audiobook if the user has permission to listen to it.
-     *
-     * @param id       the id
-     * @param username the username
-     * @return the book
-     */
-    public Book getAllowedBookByIdAndUsername(Long id, String username) {
-        User user = userRepository.findUserByUsername(username);
-
-        for (Tag tag : user.getTags()) {
-            for (Book book : tag.getBooks()) {
-                if (book.getId().equals(id)) {
-                    return book;
-                }
-            }
-        }
-        return null;
-    }
-
 }

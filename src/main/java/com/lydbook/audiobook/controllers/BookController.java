@@ -36,8 +36,8 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public String getBook(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
-        Book book = bookService.getAllowedBookByIdAndUsername(id, principal.getName());
+    public String getBook(Model model, @PathVariable("id") Long bookId, @AuthenticationPrincipal Principal principal) {
+        Book book = bookRepository.findAllowedBookById(bookId);
         if (book ==null){
             return "redirect:/books/";
         }
@@ -51,8 +51,8 @@ public class BookController {
     }
 
     @GetMapping("/books/")
-    public String getBooks(Model model, @AuthenticationPrincipal Principal principal) {
-        model.addAttribute("books", bookService.getAllowedBooksByUsername(principal.getName()));
+    public String getBooks(Model model) {
+        model.addAttribute("books", bookRepository.findAllowedBooks());
         return "books";
     }
 
