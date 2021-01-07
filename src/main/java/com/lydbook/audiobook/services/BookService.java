@@ -4,9 +4,10 @@ import com.lydbook.audiobook.entity.Author;
 import com.lydbook.audiobook.entity.Book;
 import com.lydbook.audiobook.entity.Tag;
 import com.lydbook.audiobook.entity.User;
-import com.lydbook.audiobook.repository.AuthorRepository;
-import com.lydbook.audiobook.repository.BookRepository;
-import com.lydbook.audiobook.repository.TagRepository;
+import com.lydbook.audiobook.repository.author.AuthorRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
+import com.lydbook.audiobook.repository.series.SeriesRepository;
+import com.lydbook.audiobook.repository.tag.TagRepository;
 import com.lydbook.audiobook.repository.UserRepository;
 import com.mpatric.mp3agic.*;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final SeriesRepository seriesRepository;
     private Logger log = LoggerFactory.getLogger(getClass());
 
     /**
@@ -38,12 +40,14 @@ public class BookService {
      * @param bookRepository   the book repository
      * @param tagRepository    the tag repository
      * @param userRepository   the user repository
+     * @param seriesRepository
      */
-    public BookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository) {
+    public BookService(AuthorRepository authorRepository, BookRepository bookRepository, TagRepository tagRepository, UserRepository userRepository, SeriesRepository seriesRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.seriesRepository = seriesRepository;
     }
 
     /**
@@ -103,9 +107,10 @@ public class BookService {
      *
      * @param updatedBook the updated book
      */
-    public void updateAudiobookAndTags(Book updatedBook){
+    public void updateAudiobookAndTags(Book updatedBook) {
         updateAudiobook(updatedBook);
         removeAllUnusedTags();
+        seriesRepository.removeAllUnusedSeries();
     }
 
     /**
@@ -145,6 +150,13 @@ public class BookService {
                 oldBook.addTag(tagRepository.findOrCreateFirstByName(tag.getName()));
             }
         }
+        if (updatedBook.getSeries() != null) {
+            oldBook.setSeries(seriesRepository.findOrCreateSeries(updatedBook.getSeries().getName()));
+            oldBook.setBookNumber(updatedBook.getBookNumber());
+        }else {
+            oldBook.setSeries(null);
+        }
+
         bookRepository.save(oldBook);
         log.info("Audiobook: {} has been updated.", oldBook.getTitle());
     }
@@ -152,7 +164,7 @@ public class BookService {
     /**
      * Remove all tags that are not owned by any audiobook anymore.
      */
-    public void removeAllUnusedTags(){
+    public void removeAllUnusedTags() {
         List<Tag> tagsWithNoBooks = tagRepository.findTagsWithNoBooks();
         List<User> allUsers = userRepository.findAllByOrderByUsernameAsc();
         for (User user : allUsers) {
@@ -189,43 +201,4 @@ public class BookService {
 
         bookRepository.deleteBookById(id);
     }
-
-    /**
-     * Get all Audiobook's a user has access to.
-     *
-     * @param username the username
-     * @return the allowed books by username
-     */
-    @Transactional
-    public List<Book> getAllowedBooksByUsername(String username) {
-        Set<Book> bookSet = new HashSet<>();
-        User user = userRepository.findUserByUsername(username);
-        for (Tag tag : user.getTags()) {
-            tag.getBooks().forEach(book -> bookSet.add(book));
-        }
-        List<Book> bookList = new ArrayList<>(bookSet);
-        bookList.sort(Comparator.comparing(Book::getTitle));
-        return bookList;
-    }
-
-    /**
-     * get Audiobook if the user has permission to listen to it.
-     *
-     * @param id       the id
-     * @param username the username
-     * @return the book
-     */
-    public Book getAllowedBookByIdAndUsername(Long id, String username){
-        User user = userRepository.findUserByUsername(username);
-
-        for (Tag tag : user.getTags()) {
-            for (Book book : tag.getBooks()) {
-                if (book.getId().equals(id)){
-                    return book;
-                }
-            }
-        }
-        return null;
-    }
-
 }

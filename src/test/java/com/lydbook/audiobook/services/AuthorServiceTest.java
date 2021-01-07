@@ -1,7 +1,7 @@
 package com.lydbook.audiobook.services;
 
 import com.lydbook.audiobook.entity.Author;
-import com.lydbook.audiobook.repository.BookRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
 import com.lydbook.audiobook.repository.ProgressRepository;
 import com.lydbook.audiobook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
