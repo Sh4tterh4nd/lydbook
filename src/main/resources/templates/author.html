@@ -11,7 +11,36 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="page-header">
-                <h1 th:text="${author.getName()}">Authors</h1>
+                <h1 th:text="${author.getName()}">Author</h1>
+            </div>
+        </div>
+    </div>
+    <th:block th:if="${series.size()>0}">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h3>Series</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3" th:each="serie: ${series}">
+                <a th:href="'/series/'+${serie.getId()}" style="color: inherit">
+                    <div class="bs-component">
+                        <div class="card mb-3">
+                            <img src="/authplaceholder.svg" alt="Series Img" style="max-width: 100%; height: auto">
+                            <h4 class="card-header" th:text="${serie.getName()}">SeriesName</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </th:block>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h3 >Books</h3>
             </div>
         </div>
     </div>
@@ -21,7 +50,8 @@
             <a th:href="'/book/'+${book.getId()}" style="color: inherit">
                 <div class="bs-component">
                     <div class="card mb-4">
-                        <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                        <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'"
+                             onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
                         <h4 class="card-header" th:text="${book.getTitle()}">Author Name</h4>
                     </div>
                 </div>

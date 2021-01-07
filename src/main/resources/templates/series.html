@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1 th:text="${series.getName()}">Author</h1>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:each="book: ${series.getBooks()}">
+        <div class="row alert alert-secondary">
+
+            <div class="col-lg-3">
+                <a th:href="'/book/'+ ${book.getId()}">
+                    <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'"
+                         onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <a th:href="'/book/'+ ${book.getId()}">
+                    <h2 th:text="${book.getTitle()}"></h2>
+                </a>
+                <h4 th:text="'Book ' + ${book.getBookNumberFormatted()}"></h4>
+            </div>
+        </div>
+    </th:block>
+
+</th:block>
+</body>
+</html>

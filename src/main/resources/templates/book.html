@@ -15,7 +15,7 @@
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a th:href="'/authors/'+${book.getAuthor().getId()}"
                                                th:text="${book.getAuthor().getName()}"></a></li>
-                <li class="breadcrumb-item active" th:text="${book.getTitle()}">Data</li>
+                <li class="breadcrumb-item active" th:text="${book.getTitle()}">Title</li>
             </ol>
         </div>
         <div class="col-lg-1" sec:authorize="hasRole('ADMIN')">
@@ -55,7 +55,7 @@
                 <h4>Author: <a th:href="'/authors/'+${book.getAuthor().getId()}"
                                th:text="${book.getAuthor().getName()}"></a></h4>
                 <th:block th:if="${book.getSeries()!= null}">
-                   <h4>Series: <a th:href="''" th:text="${book.getSeries().getName()}"></a>, <span th:text="'Book ' +${book.getBookNumber()}"></span></h4>
+                   <h4>Series: <a th:href="'/series/' + ${book.getSeries().getId()}" th:text="${book.getSeries().getName()}"></a>, <span th:text="'Book ' +${book.getBookNumberFormatted()}"></span></h4>
                 </th:block>
                 <h4>Tags:</h4>
                 <div class="bs-component mb-4">
@@ -187,7 +187,7 @@
                             <dl class="col-sm-3 booknumberinp">Number in Series:</dl>
                             <dd class="col-sm-9 booknumberinp">
                                 <input name="bookNumber" type="number" class="form-control" min="0"
-                                       th:value="${book.getSeries() == null}? '' :${book.getBookNumber()}"/>
+                                       th:value="${book.getSeries() == null}? '' :${book.getBookNumberFormatted()}"/>
                             </dd>
 
                             <!--                        Non deletable tags-->
