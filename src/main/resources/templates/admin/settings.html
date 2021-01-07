@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="row">
+        <h1>Settings</h1>
+
+        <div class="col-lg-12">
+            <h3>Import</h3>
+            <dl class="row">
+                <dt class="col-sm-3">Remove Keywords from Title:</dt>
+                <dd class="col-sm-9"><textarea class="form-control" id="exampleTextarea" rows="3"></textarea></dd>
+            </dl>
+
+
+        <h3>Email</h3>
+            <dl class="row">
+                <dt class="col-sm-3">Title:</dt>
+                <dd class="col-sm-9"><input type="text"  class="form-control"></dd>
+            </dl>
+        </div>
+    </div>
+
+
+</th:block>
+</body>
+</html>

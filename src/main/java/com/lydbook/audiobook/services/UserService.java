@@ -3,7 +3,7 @@ package com.lydbook.audiobook.services;
 import com.lydbook.audiobook.dao.DAOPassword;
 import com.lydbook.audiobook.entity.User;
 import com.lydbook.audiobook.entity.UserRole;
-import com.lydbook.audiobook.repository.TagRepository;
+import com.lydbook.audiobook.repository.tag.TagRepository;
 import com.lydbook.audiobook.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
