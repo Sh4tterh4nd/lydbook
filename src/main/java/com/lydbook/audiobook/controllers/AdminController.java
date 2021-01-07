@@ -1,7 +1,7 @@
 package com.lydbook.audiobook.controllers;
 
 import com.lydbook.audiobook.entity.User;
-import com.lydbook.audiobook.repository.BookRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
 import com.lydbook.audiobook.repository.ProgressRepository;
 import com.lydbook.audiobook.repository.UserRepository;
 import com.lydbook.audiobook.services.UserService;
@@ -41,5 +41,11 @@ public class AdminController {
         userService.createUser(user);
         model.addAttribute("users", userRepository.findAllByOrderByUsernameAsc());
         return "redirect:/admin/users";
+    }
+
+
+    @GetMapping("/admin/settings")
+    public String settingsView(Model model) {
+        return "/admin/settings";
     }
 }

@@ -2,8 +2,8 @@ package com.lydbook.audiobook.services;
 
 import com.lydbook.audiobook.entity.Book;
 import com.lydbook.audiobook.entity.Tag;
-import com.lydbook.audiobook.repository.BookRepository;
-import com.lydbook.audiobook.repository.TagRepository;
+import com.lydbook.audiobook.repository.book.BookRepository;
+import com.lydbook.audiobook.repository.tag.TagRepository;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.junit.jupiter.api.Test;
@@ -68,14 +68,14 @@ class BookServiceTest {
 
     @Test
     void getAllowedBooksByUsername() {
-        List<Book> test3Books = bookService.getAllowedBooksByUsername("test3");
+        List<Book> test3Books = bookRepository.findAllowedBooksByUsername("test3");
         assertTrue(test3Books.size() == 1);
         assertEquals(test3Books.get(0).getTitle(), "Skyward");
     }
 
     @Test
     void getAllowedBookByIdAndUsername() {
-        Book test3AllowedBook = bookService.getAllowedBookByIdAndUsername(1000L, "test3");
+        Book test3AllowedBook = bookRepository.findAllowedBookById(1000L, "test3");
         assertNotNull(test3AllowedBook);
         assertEquals(test3AllowedBook.getTitle(), "Skyward");
     }

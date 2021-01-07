@@ -1,4 +1,4 @@
-package com.lydbook.audiobook.repository;
+package com.lydbook.audiobook.repository.book;
 
 import com.lydbook.audiobook.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

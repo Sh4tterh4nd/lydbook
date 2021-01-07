@@ -1,4 +1,4 @@
-package com.lydbook.audiobook.repository;
+package com.lydbook.audiobook.repository.tag;
 
 import com.lydbook.audiobook.entity.Tag;
 

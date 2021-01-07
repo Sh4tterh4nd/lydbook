@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1608730747350-1
+      author: Arieh (generated)
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: series_sequence
+            startValue: 10000
+  - changeSet:
+      id: 1608730747350-2
+      author: Arieh (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: seriesPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: series
+  - changeSet:
+      id: 1608730747350-3
+      author: Arieh (generated)
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: book_number
+                  type: float8
+              - column:
+                  name: series_id
+                  type: int8
+              - column:
+                  name: upload_date
+                  type: timestamp
+            tableName: books
+  - changeSet:
+      id: 1608730747350-11
+      author: Arieh (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: series_id
+            baseTableName: books
+            constraintName: FKh16ssynmso8qdbwd7jtkx2ifg
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: series
+            validate: true

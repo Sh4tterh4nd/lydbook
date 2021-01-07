@@ -1,4 +1,4 @@
-package com.lydbook.audiobook.repository;
+package com.lydbook.audiobook.repository.author;
 
 import com.lydbook.audiobook.entity.Author;
 

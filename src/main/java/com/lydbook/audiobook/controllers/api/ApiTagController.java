@@ -1,7 +1,7 @@
 package com.lydbook.audiobook.controllers.api;
 
 import com.lydbook.audiobook.entity.Tag;
-import com.lydbook.audiobook.repository.TagRepository;
+import com.lydbook.audiobook.repository.tag.TagRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
