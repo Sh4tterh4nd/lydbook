@@ -136,7 +136,7 @@ public class SeriesRepositoryCustomImpl implements SeriesRepositoryCustom {
                 "join user.tags tags " +
                 "join tags.books book " +
                 "join book.series series " +
-                "where user.username= :username and series.id = :seriesId", Book.class);
+                "where user.username= :username and series.id = :seriesId order by book.bookNumber asc", Book.class);
 
         q.setParameter("username", getLoggedinUser());
         q.setParameter("seriesId", seriesId);
