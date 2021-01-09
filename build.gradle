@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 group = 'com.lydbook.audiobook'
-version = '0.8.1'
+version = '0.8.3'
 description = 'Lydbook'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -32,6 +32,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.2.16'
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.mpatric:mp3agic:0.9.1'
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
 
 
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'

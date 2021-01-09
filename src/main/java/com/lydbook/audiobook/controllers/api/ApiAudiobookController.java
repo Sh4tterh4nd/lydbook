@@ -9,9 +9,7 @@ import com.lydbook.audiobook.util.BookUtil;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +21,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("api/v1/audiobook")
@@ -66,13 +65,19 @@ public class ApiAudiobookController {
     }
 
     @GetMapping(value = "{bookId}/cover", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody
-    byte[] getCover(@PathVariable("bookId") Long bookId) throws IOException {
+    public ResponseEntity<byte[]> getCover(@PathVariable("bookId") Long bookId) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setCacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES));
         Book book = bookRepository.findAllowedBookById(bookId);
         if (book == null) {
-            return new byte[0];
+            return new ResponseEntity<>(new byte[]{}, new HttpHeaders(),HttpStatus.NOT_FOUND);
         }
-        return Files.readAllBytes(Paths.get("data", book.getDataName().concat(".jpeg")));
+        byte[] image = Files.readAllBytes(Paths.get("data", book.getDataName().concat(".jpeg")));
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(image, headers, HttpStatus.OK);
+
+
+        return responseEntity;
     }
 
 
