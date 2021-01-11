@@ -34,7 +34,6 @@ dependencies {
     implementation 'com.mpatric:mp3agic:0.9.1'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
 
-
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'
     liquibaseRuntime 'org.yaml:snakeyaml:1.15'
     liquibaseRuntime 'ch.qos.logback:logback-core:1.2.3'
@@ -89,7 +88,7 @@ jib {
         tags = ['latest', version]
         auth {
             username = 'shatterhand'
-            password = ''
+            password = "${System.env.JIB_PASSWORD}"
         }
     }
     container {

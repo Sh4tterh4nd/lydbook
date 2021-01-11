@@ -69,6 +69,7 @@ public class ApiAudiobookController {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setCacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES));
+
         Book book = bookRepository.findAllowedBookById(bookId);
         if (book == null) {
             return new ResponseEntity<>(new byte[]{}, new HttpHeaders(),HttpStatus.NOT_FOUND);
