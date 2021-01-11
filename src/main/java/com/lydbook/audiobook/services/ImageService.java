@@ -43,7 +43,7 @@ public class ImageService {
 
 
     public static BufferedImage resizeImage(BufferedImage originalImage, int scale) {
-        return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, scale, scale, Scalr.OP_ANTIALIAS);
+        return Scalr.resize(originalImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.AUTOMATIC, scale, scale, Scalr.OP_ANTIALIAS);
     }
 
 }

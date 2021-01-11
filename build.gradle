@@ -89,7 +89,7 @@ jib {
         tags = ['latest', version]
         auth {
             username = 'shatterhand'
-            password = 'gaX7*sus'
+            password = ''
         }
     }
     container {
