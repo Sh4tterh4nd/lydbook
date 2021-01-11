@@ -12,17 +12,14 @@ import java.util.*;
  */
 @Service
 public class AuthorService {
-    private final BookService bookService;
     private final BookRepository bookRepository;
 
     /**
      * Instantiates a new Author service.
      *
-     * @param bookService the audiobook service
      * @param bookRepository
      */
-    public AuthorService(BookService bookService, BookRepository bookRepository) {
-        this.bookService = bookService;
+    public AuthorService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 

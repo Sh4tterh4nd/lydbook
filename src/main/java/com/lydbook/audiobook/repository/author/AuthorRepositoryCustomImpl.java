@@ -1,5 +1,6 @@
 package com.lydbook.audiobook.repository.author;
 
+import com.lydbook.audiobook.config.IAuthenticationFacade;
 import com.lydbook.audiobook.entity.Author;
 import org.springframework.stereotype.Repository;
 
@@ -16,14 +17,16 @@ import java.util.List;
 @Repository
 public class AuthorRepositoryCustomImpl implements AuthorRepositoryCustom {
     private final EntityManager entityManager;
-
+    private final IAuthenticationFacade authenticationFacade;
     /**
      * Instantiates a new Author repository custom.
      *
      * @param entityManager the entity manager
+     * @param authenticationFacade
      */
-    public AuthorRepositoryCustomImpl(EntityManager entityManager) {
+    public AuthorRepositoryCustomImpl(EntityManager entityManager, IAuthenticationFacade authenticationFacade) {
         this.entityManager = entityManager;
+        this.authenticationFacade = authenticationFacade;
     }
 
 

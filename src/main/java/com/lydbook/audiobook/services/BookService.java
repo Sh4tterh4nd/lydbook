@@ -150,7 +150,7 @@ public class BookService {
                 oldBook.addTag(tagRepository.findOrCreateFirstByName(tag.getName()));
             }
         }
-        if (updatedBook.getSeries() != null) {
+        if (updatedBook.getSeries() != null && !updatedBook.getSeries().getName().isBlank()) {
             oldBook.setSeries(seriesRepository.findOrCreateSeries(updatedBook.getSeries().getName()));
             oldBook.setBookNumber(updatedBook.getBookNumber());
         }else {
