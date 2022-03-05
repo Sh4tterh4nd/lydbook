@@ -44,7 +44,7 @@ public class Book {
     private Series series;
 
     @Column(name = "book_number")
-    private double bookNumber;
+    private Double bookNumber;
 
     /**
      * Gets author.

@@ -36,7 +36,7 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
         this.authenticationFacade = authenticationFacade;
     }
 
-    private String getLoggedinUser() {
+   public   String getLoggedinUser() {
         return authenticationFacade.getAuthentication().getName();
     }
 

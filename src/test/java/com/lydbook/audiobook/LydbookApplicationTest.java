@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class LydbookApplication {
+class LydbookApplicationTest {
 
 	@Test
 	void contextLoads() {
