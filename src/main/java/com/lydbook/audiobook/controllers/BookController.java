@@ -36,7 +36,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public String getBook(Model model, @PathVariable("id") Long bookId, @AuthenticationPrincipal Principal principal) {
+    public String getBook(Model model, @PathVariable("id") Long bookId, Principal principal) {
         Book book = bookRepository.findAllowedBookById(bookId);
         if (book ==null){
             return "redirect:/books/";

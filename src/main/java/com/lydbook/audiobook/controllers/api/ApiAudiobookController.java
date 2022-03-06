@@ -64,6 +64,7 @@ public class ApiAudiobookController {
         return ResponseEntity.ok().body(new FileSystemResource(bookPath));
     }
 
+
     @GetMapping(value = "{bookId}/cover", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getCover(@PathVariable("bookId") Long bookId) throws IOException {
         HttpHeaders headers = new HttpHeaders();
@@ -72,17 +73,19 @@ public class ApiAudiobookController {
 
         Book book = bookRepository.findAllowedBookById(bookId);
         if (book == null) {
-            return new ResponseEntity<>(new byte[]{}, new HttpHeaders(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new byte[]{}, new HttpHeaders(), HttpStatus.NOT_FOUND);
         }
         byte[] image = Files.readAllBytes(Paths.get("data", book.getDataName().concat(".jpeg")));
         ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(image, headers, HttpStatus.OK);
-
-
         return responseEntity;
     }
 
+    @GetMapping(value = "{bookId}/")
+    public Book getBook(@PathVariable("bookId") Long bookId){
+        return bookRepository.findBookById(bookId);
+    }
 
-    @PutMapping("{bookId}/")
+    @PutMapping(value = "{bookId}/")
     public ResponseEntity updateBook(@PathVariable("bookId") Long bookId, @RequestBody Book book) {
         if (book.getId().equals(bookId)) {
             bookService.updateAudiobookAndTags(book);
@@ -93,7 +96,7 @@ public class ApiAudiobookController {
 
     }
 
-    @DeleteMapping("{bookId}/")
+    @DeleteMapping(value = "{bookId}/")
     public void deleteBook(@PathVariable("bookId") Long bookId) {
         bookService.deleteAudiobook(bookId);
     }

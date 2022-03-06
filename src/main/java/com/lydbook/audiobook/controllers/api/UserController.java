@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("password")
-    public boolean updatePassword(@RequestBody DAOPassword password, @AuthenticationPrincipal Principal principal){
+    public boolean updatePassword(@RequestBody DAOPassword password, Principal principal){
         return userService.updatePassword(principal.getName(), password);
     }
 }

@@ -17,7 +17,7 @@ public class ApiProgressController {
     }
 
     @PostMapping("{bookId}/")
-    public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, @AuthenticationPrincipal Principal principal) {
+    public String updateProgress(@PathVariable("bookId") Long bookId, @RequestBody String body, Principal principal) {
         if (BookUtil.isNumeric(body)) {
             progressService.updateProgress(principal.getName(), bookId, (int) Double.parseDouble(body));
         }
