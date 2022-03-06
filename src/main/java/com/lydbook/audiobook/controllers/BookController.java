@@ -39,7 +39,7 @@ public class BookController {
     public String getBook(Model model, @PathVariable("id") Long bookId, Principal principal) {
         Book book = bookRepository.findAllowedBookById(bookId);
         if (book ==null){
-            return "redirect:/books/";
+            return "redirect:/books";
         }
         User user = userRepository.findUserByUsername(principal.getName());
         Progress progress = progressRepository.findFirstByBookAndUser(book, user);
@@ -50,7 +50,7 @@ public class BookController {
         return "book";
     }
 
-    @GetMapping("/books/")
+    @GetMapping("/books")
     public String getBooks(Model model) {
         model.addAttribute("books", bookRepository.findAllowedBooks());
         return "books";

@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("api/v1/audiobook")
+@RequestMapping("api/v1/audiobooks")
 public class ApiAudiobookController {
     private final BookService bookService;
     private final ProgressService progressService;
@@ -80,12 +80,12 @@ public class ApiAudiobookController {
         return responseEntity;
     }
 
-    @GetMapping(value = "{bookId}/")
+    @GetMapping(value = "{bookId}")
     public Book getBook(@PathVariable("bookId") Long bookId){
         return bookRepository.findBookById(bookId);
     }
 
-    @PutMapping(value = "{bookId}/")
+    @PutMapping(value = "{bookId}")
     public ResponseEntity updateBook(@PathVariable("bookId") Long bookId, @RequestBody Book book) {
         if (book.getId().equals(bookId)) {
             bookService.updateAudiobookAndTags(book);
@@ -96,7 +96,7 @@ public class ApiAudiobookController {
 
     }
 
-    @DeleteMapping(value = "{bookId}/")
+    @DeleteMapping(value = "{bookId}")
     public void deleteBook(@PathVariable("bookId") Long bookId) {
         bookService.deleteAudiobook(bookId);
     }

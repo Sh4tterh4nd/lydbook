@@ -22,7 +22,7 @@
             <a th:href="'/book/'+${book.getId()}" style="color: inherit">
                 <div class="bs-component">
                     <div class="card mb-3">
-                        <img th:src="'/api/v1/audiobook/'+${book.getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                        <img th:src="'/api/v1/audiobooks/'+${book.getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
                         <h4 class="card-header" th:text="${book.getTitle()}">Book Title</h4>
                     </div>
                 </div>

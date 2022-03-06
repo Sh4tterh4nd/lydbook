@@ -18,7 +18,7 @@ public class AuthorController {
         this.seriesRepository = seriesRepository;
     }
 
-    @GetMapping("/authors/")
+    @GetMapping("/authors")
     public String authors(Model model) {
         model.addAttribute("authors", authorService.getAllowedAuthorsByUsername());
         return "authors";
@@ -28,7 +28,7 @@ public class AuthorController {
     public String author(Model model, @PathVariable("id") Long id) {
         Author author = authorService.getAllowedAuthorByIdAndUsername(id);
         if (author == null){
-            return "redirect:/authors/";
+            return "redirect:/authors";
         }
         model.addAttribute("series", seriesRepository.findAllSeriesByAuthor(id));
         model.addAttribute("author", author);
