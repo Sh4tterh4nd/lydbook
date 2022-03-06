@@ -146,21 +146,12 @@ public class Book {
         this.series = series;
     }
 
-    public String getBookNumberFormatted() {
-        double d = bookNumber;
-        if (d == (long) d) {
-            return String.format("%d", (long) d);
-        } else {
-            return String.format("%s", d);
 
-        }
-    }
-
-    public double getBookNumber() {
+    public Double getBookNumber() {
         return bookNumber;
     }
 
-    public void setBookNumber(double bookNumber) {
+    public void setBookNumber(Double bookNumber) {
         this.bookNumber = bookNumber;
     }
 

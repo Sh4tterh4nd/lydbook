@@ -29,7 +29,7 @@
                 <a th:href="'/book/'+ ${book.getId()}">
                     <h2 th:text="${book.getTitle()}"></h2>
                 </a>
-                <h4 th:text="'Book ' + ${book.getBookNumberFormatted()}"></h4>
+                <h4 th:text="'Book ' + ${book.getBookNumber()}"></h4>
             </div>
         </div>
     </th:block>
