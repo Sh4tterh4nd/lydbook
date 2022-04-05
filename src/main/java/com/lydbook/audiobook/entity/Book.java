@@ -1,5 +1,6 @@
 package com.lydbook.audiobook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @JsonIgnore
     @Column(name = "data_name")
     private String dataName;
 

@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -99,5 +100,10 @@ public class ApiAudiobookController {
     @DeleteMapping(value = "{bookId}")
     public void deleteBook(@PathVariable("bookId") Long bookId) {
         bookService.deleteAudiobook(bookId);
+    }
+
+    @GetMapping(value = "")
+    public List<Book> getBooks(){
+        return bookRepository.findAllowedBooks();
     }
 }
