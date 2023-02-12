@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="form-group" id="uploadInput">
-                <form th:action="@{/api/v1/audiobook}" method="post" enctype="multipart/form-data"
+                <form th:action="@{/api/v1/audiobooks}" method="post" enctype="multipart/form-data"
                       class="input-group mb-3" id="uploadForm">
                     <div class="custom-file">
                         <input name="data" type="file" accept=".mp3" class="custom-file-input" id="inputGroupFile">
@@ -73,7 +73,7 @@
                     $.ajax({
                         type: "POST",
                         enctype: 'multipart/form-data',
-                        url: "/api/v1/audiobook",
+                        url: "/api/v1/audiobooks",
                         data: data,
                         processData: false,
                         contentType: false,

@@ -1,5 +1,6 @@
 package com.lydbook.audiobook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @JsonIgnore
     @Column(name = "data_name")
     private String dataName;
 
@@ -146,21 +148,12 @@ public class Book {
         this.series = series;
     }
 
-    public String getBookNumberFormatted() {
-        double d = bookNumber;
-        if (d == (long) d) {
-            return String.format("%d", (long) d);
-        } else {
-            return String.format("%s", d);
 
-        }
-    }
-
-    public double getBookNumber() {
+    public Double getBookNumber() {
         return bookNumber;
     }
 
-    public void setBookNumber(double bookNumber) {
+    public void setBookNumber(Double bookNumber) {
         this.bookNumber = bookNumber;
     }
 

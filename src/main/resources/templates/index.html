@@ -22,7 +22,7 @@
                 <a th:href="'/book/'+${last.getBook().getId()}" style="color: inherit">
                     <div class="bs-component">
                         <div class="card mb-3">
-                            <img th:src="'/api/v1/audiobook/'+${last.getBook().getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                            <img th:src="'/api/v1/audiobooks/'+${last.getBook().getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
                             <h4 class="card-header" th:text="${last.getBook().getTitle()}">Book Title</h4>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                     <a th:href="'/book/'+${progress.getBook().getId()}" style="color: inherit">
                         <div class="bs-component">
                             <div class="card mb-3">
-                                <img th:src="'/api/v1/audiobook/'+${progress.getBook().getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
+                                <img th:src="'/api/v1/audiobooks/'+${progress.getBook().getId()}+'/cover'" onerror="this.src='/bookcoverplaceholder.svg'" style="width: 100%"/>
                                 <h6 class="card-header" th:text="${progress.getBook().getTitle()}">Book Title</h6>
                             </div>
                         </div>

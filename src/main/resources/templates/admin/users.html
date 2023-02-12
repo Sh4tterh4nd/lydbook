@@ -166,7 +166,8 @@
         }
 
         function editUser(id) {
-            $.getJSON("/api/v1/user/" + id + "/", function (data) {
+            $.getJSON("/api/v1/user/" + id,
+                function (data) {
                 updateEditUserView(data);
             });
         }
@@ -223,7 +224,7 @@
         $('#deleteUserSubmit').click(function () {
             $.ajax({
                 type: "DELETE",
-                url: "/api/v1/user/" + userId + "/",
+                url: "/api/v1/user/" + userId ,
                 success: function () {
                     location.reload();
                 }

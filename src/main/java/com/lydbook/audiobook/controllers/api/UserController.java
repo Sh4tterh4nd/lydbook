@@ -24,12 +24,12 @@ public class UserController {
         userService.createUser(user);
     }
 
-    @DeleteMapping("{id}/")
+    @DeleteMapping("{id}")
     public void createUser(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
     }
 
-    @GetMapping("{id}/")
+    @GetMapping("{id}")
     public User getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("password")
-    public boolean updatePassword(@RequestBody DAOPassword password, @AuthenticationPrincipal Principal principal){
+    public boolean updatePassword(@RequestBody DAOPassword password, Principal principal){
         return userService.updatePassword(principal.getName(), password);
     }
 }

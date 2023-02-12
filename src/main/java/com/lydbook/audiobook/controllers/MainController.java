@@ -29,7 +29,7 @@ public class MainController {
     }
 
     @GetMapping({"/", "/index"})
-    public String index(Model model, @AuthenticationPrincipal Principal principal) {
+    public String index(Model model, Principal principal) {
         List<Progress> mostRecentProgress = progressService.getMostRecentProgressByUser(principal.getName());
         if (mostRecentProgress.size() > 0) {
             model.addAttribute("last", mostRecentProgress.get(0));
@@ -46,7 +46,7 @@ public class MainController {
     }
 
     @GetMapping("/current")
-    public String current(@AuthenticationPrincipal Principal principal) {
+    public String current(Principal principal) {
         List<Progress> mostRecentProgress = progressService.getMostRecentProgressByUser(principal.getName());
         if (mostRecentProgress.size() > 0) {
             return "redirect:/book/" + mostRecentProgress.get(0).getBook().getId();
@@ -66,7 +66,7 @@ public class MainController {
     }
 
     @PutMapping("/myaccount")
-    public String accountUpdate(Model model, @RequestBody DAOPassword password, @AuthenticationPrincipal Principal principal) {
+    public String accountUpdate(Model model, @RequestBody DAOPassword password, Principal principal) {
         model.addAttribute("success", userService.updatePassword(principal.getName(), password));
         return "/admin/myaccount";
     }
